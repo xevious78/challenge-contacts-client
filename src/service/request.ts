@@ -1,7 +1,8 @@
 import axios from "axios";
+import Config from "../config";
 
 const Request = axios.create({
-  baseURL: "https://localhost:3000/",
+  baseURL: Config.backend.baseURL,
 });
 
 export default Request;
