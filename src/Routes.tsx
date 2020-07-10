@@ -6,22 +6,26 @@ import App from "./App";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 
+export const AppRoutes = () => (
+  <App>
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="/contact">
+        <Contact />
+      </Route>
+      <Route path="/contact/:contactId">
+        <Contact />
+      </Route>
+    </Switch>
+  </App>
+);
+
 export default function Routes() {
   return (
-    <App>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/contact">
-            <Contact />
-          </Route>
-          <Route path="/contact/:contactId">
-            <Contact />
-          </Route>
-        </Switch>
-      </Router>
-    </App>
+    <Router>
+      <AppRoutes />
+    </Router>
   );
 }
