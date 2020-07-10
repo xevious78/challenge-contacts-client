@@ -12,10 +12,10 @@ export const AppRoutes = () => (
       <Route exact path="/">
         <Home />
       </Route>
-      <Route path="/contact">
+      <Route exact path="/contact/:contactId">
         <Contact />
       </Route>
-      <Route path="/contact/:contactId">
+      <Route exact path="/contact">
         <Contact />
       </Route>
     </Switch>
