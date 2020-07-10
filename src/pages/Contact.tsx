@@ -17,10 +17,10 @@ const Contact = () => {
   const [contactName, setContactName] = useState("");
 
   useEffect(() => {
-    if (contactId) {
+    if (contactId && !contact) {
       fetch(contactId);
     }
-  }, [contactId]);
+  }, [contactId, contact]);
 
   ///////////////////////////////////////////
   // Network
@@ -66,8 +66,10 @@ const Contact = () => {
     await delay(2000);
     try {
       const response = await API.contact.createContact(contactInfos);
-      console.log(response);
       const { contact } = response.data;
+      setContact(contact);
+      setContactName(contact.name);
+
       history.replace(`/contact/${contact.id}`);
     } catch (e) {
       //TODO: Error
