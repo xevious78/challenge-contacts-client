@@ -1,8 +1,10 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import "./App.css";
 
-function App() {
-  return <div className="App"></div>;
-}
+type Props = {};
+
+const App: FunctionComponent<Props> = ({ children }) => {
+  return <div className="App">{children}</div>;
+};
 
 export default App;
