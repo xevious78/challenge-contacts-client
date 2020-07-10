@@ -1,14 +1,16 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import API from "../service/api";
 import { Modal, Input, Button } from "antd";
 import delay from "../utils/delay";
 
 const Contact = () => {
   const { contactId } = useParams();
+  const history = useHistory();
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState(null);
 
@@ -24,7 +26,10 @@ const Contact = () => {
   // Network
   ///////////////////////////////////////////
   const fetch = async (contactId: string) => {
+    console.log("fetching", contactId);
     setIsFetching(true);
+    await delay(2000);
+
     try {
       const response = await API.contact.getContact(contactId);
       const { contact } = response.data;
@@ -47,11 +52,27 @@ const Contact = () => {
     await delay(2000);
     try {
       const response = await API.contact.updateContact(contactId, contactInfos);
-      console.log(response);
     } catch (e) {
       //TODO: Error
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const create = async (contactInfos: any) => {
+    setIsCreating(true);
+    //TODO: Check values
+
+    await delay(2000);
+    try {
+      const response = await API.contact.createContact(contactInfos);
+      console.log(response);
+      const { contact } = response.data;
+      history.replace(`/contact/${contact.id}`);
+    } catch (e) {
+      //TODO: Error
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -64,7 +85,7 @@ const Contact = () => {
   };
 
   ///////////////////////////////////////////
-  // Buttons Cb
+  // Toolbar Cb
   ///////////////////////////////////////////
 
   const handleSaveClick = () => {
@@ -76,25 +97,55 @@ const Contact = () => {
     update(contactId, contactInfos);
   };
 
+  const handleCreateClick = () => {
+    const contactInfos = {
+      name: contactName,
+    };
+
+    create(contactInfos);
+  };
+
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+
+  const renderToolbar = () => {
+    if (contactId) {
+      return (
+        <div>
+          <Button
+            type="primary"
+            disabled={isFetching || isUpdating}
+            loading={isUpdating}
+            onClick={handleSaveClick}
+          >
+            Save
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Button
+            type="primary"
+            disabled={isUpdating}
+            loading={isCreating}
+            onClick={handleCreateClick}
+          >
+            Create
+          </Button>
+        </div>
+      );
+    }
+  };
+
   return (
     <div data-testid="contact-page">
       <div>
         <div>Name</div>
         <Input value={contactName} onChange={handleContactNameChange} />
       </div>
-      <div>
-        <Button
-          type="primary"
-          disabled={isFetching || isUpdating}
-          loading={isUpdating}
-          onClick={handleSaveClick}
-        >
-          Save
-        </Button>
-      </div>
+      <div>{renderToolbar()}</div>
     </div>
   );
 };
