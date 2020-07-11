@@ -1,20 +1,26 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API from "../service/api";
 import { Modal, Input, Button } from "antd";
 import delay from "../utils/delay";
+import ContactForm from "../components/Contact/ContactForm";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+
+type FormValues = {
+  name: string;
+};
 
 const Contact = () => {
   const { contactId } = useParams();
   const history = useHistory();
 
+  const methods = useForm<FormValues>();
+
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const [contact, setContact] = useState(null);
-
-  const [contactName, setContactName] = useState("");
+  const [contact, setContact] = useState<any | null>(null);
 
   useEffect(() => {
     if (contactId && !contact) {
@@ -22,11 +28,16 @@ const Contact = () => {
     }
   }, [contactId, contact]);
 
+  const resetForm = (contact: any) => {
+    methods.reset({
+      name: contact.name,
+    });
+  };
+
   ///////////////////////////////////////////
   // Network
   ///////////////////////////////////////////
   const fetch = async (contactId: string) => {
-    console.log("fetching", contactId);
     setIsFetching(true);
     await delay(2000);
 
@@ -34,7 +45,7 @@ const Contact = () => {
       const response = await API.contact.getContact(contactId);
       const { contact } = response.data;
       setContact(contact);
-      setContactName(contact.name);
+      resetForm(contact);
     } catch (e) {
       //TODO: Error
       Modal.error({
@@ -52,6 +63,9 @@ const Contact = () => {
     await delay(2000);
     try {
       const response = await API.contact.updateContact(contactId, contactInfos);
+      const { contact } = response.data;
+      setContact(contact);
+      resetForm(contact);
     } catch (e) {
       //TODO: Error
     } finally {
@@ -68,7 +82,7 @@ const Contact = () => {
       const response = await API.contact.createContact(contactInfos);
       const { contact } = response.data;
       setContact(contact);
-      setContactName(contact.name);
+      resetForm(contact);
 
       history.replace(`/contact/${contact.id}`);
     } catch (e) {
@@ -79,32 +93,20 @@ const Contact = () => {
   };
 
   ///////////////////////////////////////////
-  // Name Cb
-  ///////////////////////////////////////////
-
-  const handleContactNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContactName(e.target.value);
-  };
-
-  ///////////////////////////////////////////
   // Toolbar Cb
   ///////////////////////////////////////////
 
-  const handleSaveClick = () => {
+  const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
+    console.log(data);
     const contactInfos = {
-      id: contactId,
-      name: contactName,
+      name: data.name,
     };
 
-    update(contactId, contactInfos);
-  };
-
-  const handleCreateClick = () => {
-    const contactInfos = {
-      name: contactName,
-    };
-
-    create(contactInfos);
+    if (contactId) {
+      update(contactId, contactInfos);
+    } else {
+      create(contactInfos);
+    }
   };
 
   ///////////////////////////////////////////
@@ -117,9 +119,9 @@ const Contact = () => {
         <div>
           <Button
             type="primary"
+            htmlType="submit"
             disabled={isFetching || isUpdating}
             loading={isUpdating}
-            onClick={handleSaveClick}
           >
             Save
           </Button>
@@ -130,9 +132,9 @@ const Contact = () => {
         <div>
           <Button
             type="primary"
+            htmlType="submit"
             disabled={isUpdating}
             loading={isCreating}
-            onClick={handleCreateClick}
           >
             Create
           </Button>
@@ -143,11 +145,14 @@ const Contact = () => {
 
   return (
     <div data-testid="contact-page">
-      <div>
-        <div>Name</div>
-        <Input value={contactName} onChange={handleContactNameChange} />
-      </div>
-      <div>{renderToolbar()}</div>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <div>
+            <ContactForm />
+          </div>
+          <div>{renderToolbar()}</div>
+        </form>
+      </FormProvider>
     </div>
   );
 };
