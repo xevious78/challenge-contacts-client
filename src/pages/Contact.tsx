@@ -18,6 +18,8 @@ const Contact = () => {
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<any | null>(null);
@@ -64,7 +66,6 @@ const Contact = () => {
     }
 
     setIsUpdating(true);
-    //TODO: Check values
 
     await delay(2000);
     try {
@@ -87,7 +88,6 @@ const Contact = () => {
     }
 
     setIsCreating(true);
-    //TODO: Check values
 
     await delay(2000);
     try {
@@ -101,6 +101,24 @@ const Contact = () => {
       //TODO: Error
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const deleteContact = async (contactId: string) => {
+    if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
+      return;
+    }
+
+    setIsDeleting(true);
+
+    await delay(2000);
+    try {
+      await API.contact.deleteContact(contactId);
+      history.replace(`/`);
+    } catch (e) {
+      //TODO: Error
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -121,6 +139,10 @@ const Contact = () => {
     }
   };
 
+  const handleDeleteClick = () => {
+    deleteContact(contactId);
+  };
+
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
@@ -132,10 +154,17 @@ const Contact = () => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={isFetching || isUpdating}
+            disabled={isFetching || isUpdating || isDeleting}
             loading={isUpdating}
           >
             Save
+          </Button>
+          <Button
+            disabled={isFetching || isUpdating || isDeleting}
+            loading={isDeleting}
+            onClick={handleDeleteClick}
+          >
+            Delete
           </Button>
         </div>
       );
