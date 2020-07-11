@@ -26,6 +26,20 @@ const ContactForm = React.memo<Props>((props) => {
         <FormInput name="jobTitle" />
       </FormRow>
 
+      <FormRow title="Email" errorMessage={errors.email && "Email is invalid"}>
+        <FormInput
+          name="email"
+          type="email"
+          rules={{
+            required: false,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          }}
+        />
+      </FormRow>
+
       <FormRow title="Address">
         <FormInput name="address" />
       </FormRow>

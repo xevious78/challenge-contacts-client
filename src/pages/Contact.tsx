@@ -9,6 +9,7 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 type FormValues = {
   name: string;
   jobTitle: string;
+  email: string;
   address: string;
 };
 
@@ -32,10 +33,15 @@ const Contact = () => {
     }
   }, [contactId, contact]);
 
+  ///////////////////////////////////////////
+  // Form methods
+  ///////////////////////////////////////////
+
   const resetForm = (contact: any) => {
     methods.reset({
       name: contact.name,
       jobTitle: contact.jobTitle,
+      email: contact.email,
       address: contact.address,
     });
   };
@@ -43,6 +49,7 @@ const Contact = () => {
   const formValuesToContactInfos = (data: FormValues) => ({
     name: data.name,
     jobTitle: data.jobTitle,
+    email: data.email,
     address: data.address,
   });
 
