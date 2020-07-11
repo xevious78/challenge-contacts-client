@@ -11,6 +11,7 @@ type FormValues = {
   jobTitle: string;
   email: string;
   address: string;
+  phoneNumbers: [{ text: string }];
 };
 
 const Contact = () => {
@@ -43,6 +44,9 @@ const Contact = () => {
       jobTitle: contact.jobTitle,
       email: contact.email,
       address: contact.address,
+      phoneNumbers: contact.phoneNumbers.map((a: string) => ({
+        text: a,
+      })),
     });
   };
 
@@ -51,6 +55,7 @@ const Contact = () => {
     jobTitle: data.jobTitle,
     email: data.email,
     address: data.address,
+    phoneNumbers: data.phoneNumbers.map((a) => a.text),
   });
 
   ///////////////////////////////////////////
