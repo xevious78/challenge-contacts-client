@@ -41,7 +41,11 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
     name={name}
     rules={rules}
     render={(props: any) => (
-      <PhoneInput {...props} displayInitialValueAsLocalNumber />
+      <PhoneInput
+        {...props}
+        displayInitialValueAsLocalNumber
+        inputComponent={Input}
+      />
     )}
   />
 );
