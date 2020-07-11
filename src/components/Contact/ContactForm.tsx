@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "antd";
 import { useFormContext, Controller, useFieldArray } from "react-hook-form";
-import { FormInput } from "../common/FormComponents";
+import { FormInput, FormPhoneInput } from "../common/FormComponents";
 import FormRow from "../common/FormRow";
 
 type Props = {
@@ -57,7 +57,7 @@ const ContactForm = React.memo<Props>((props) => {
         </button>
         {fields.map((field, index) => (
           <div key={field.id}>
-            <FormInput name={`phoneNumbers[${index}].text`} />
+            <FormPhoneInput name={`phoneNumbers[${index}].text`} />
             <button onClick={() => remove(index)}>Delete</button>
           </div>
         ))}
