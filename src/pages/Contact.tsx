@@ -57,6 +57,12 @@ const Contact = () => {
   };
 
   const update = async (contactId: string, contactInfos: any) => {
+    methods.clearErrors();
+    const validated = await methods.trigger();
+    if (!validated) {
+      return;
+    }
+
     setIsUpdating(true);
     //TODO: Check values
 
@@ -74,6 +80,12 @@ const Contact = () => {
   };
 
   const create = async (contactInfos: any) => {
+    methods.clearErrors();
+    const validated = await methods.trigger();
+    if (!validated) {
+      return;
+    }
+
     setIsCreating(true);
     //TODO: Check values
 

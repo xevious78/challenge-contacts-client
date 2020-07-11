@@ -10,6 +10,7 @@ type Props = {
 
 const ContactForm = React.memo<Props>((props) => {
   const { loading = false, disabled = false } = props;
+  const { errors } = useFormContext();
 
   ///////////////////////////////////////////
   // Render
@@ -17,7 +18,8 @@ const ContactForm = React.memo<Props>((props) => {
   return (
     <div>
       Name
-      <FormInput name="name" />
+      <FormInput name="name" rules={{ required: true }} />
+      {errors.name && <p>Name is required</p>}
     </div>
   );
 });
