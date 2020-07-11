@@ -11,7 +11,7 @@ type FormValues = {
   jobTitle: string;
   email: string;
   address: string;
-  phoneNumbers: [{ text: string }];
+  phoneNumbers?: [{ text: string }];
 };
 
 const Contact = () => {
@@ -55,7 +55,7 @@ const Contact = () => {
     jobTitle: data.jobTitle,
     email: data.email,
     address: data.address,
-    phoneNumbers: data.phoneNumbers.map((a) => a.text),
+    phoneNumbers: data.phoneNumbers?.map((a) => a.text) ?? [],
   });
 
   ///////////////////////////////////////////
