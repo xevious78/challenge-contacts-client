@@ -21,6 +21,14 @@ const ContactForm = React.memo<Props>((props) => {
       <FormRow title="Name" errorMessage={errors.name && "Name is required"}>
         <FormInput name="name" rules={{ required: true }} />
       </FormRow>
+
+      <FormRow title="Job Title">
+        <FormInput name="jobTitle" />
+      </FormRow>
+
+      <FormRow title="Address">
+        <FormInput name="address" />
+      </FormRow>
     </div>
   );
 });

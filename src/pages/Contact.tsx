@@ -8,6 +8,8 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 
 type FormValues = {
   name: string;
+  jobTitle: string;
+  address: string;
 };
 
 const Contact = () => {
@@ -33,8 +35,16 @@ const Contact = () => {
   const resetForm = (contact: any) => {
     methods.reset({
       name: contact.name,
+      jobTitle: contact.jobTitle,
+      address: contact.address,
     });
   };
+
+  const formValuesToContactInfos = (data: FormValues) => ({
+    name: data.name,
+    jobTitle: data.jobTitle,
+    address: data.address,
+  });
 
   ///////////////////////////////////////////
   // Network
@@ -147,9 +157,7 @@ const Contact = () => {
 
   const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
     console.log(data);
-    const contactInfos = {
-      name: data.name,
-    };
+    const contactInfos = formValuesToContactInfos(data);
 
     if (contactId) {
       update(contactId, contactInfos);
