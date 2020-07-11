@@ -55,7 +55,8 @@ const Contact = () => {
     jobTitle: data.jobTitle,
     email: data.email,
     address: data.address,
-    phoneNumbers: data.phoneNumbers?.map((a) => a.text) ?? [],
+    phoneNumbers:
+      data.phoneNumbers?.map((a) => a.text).filter((a) => !!a) ?? [], // take only non-empty phone numbers
   });
 
   ///////////////////////////////////////////
