@@ -40,6 +40,10 @@ const Contact = () => {
   // Network
   ///////////////////////////////////////////
   const fetch = async (contactId: string) => {
+    if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
+      return;
+    }
+
     setIsFetching(true);
     await delay(2000);
 
@@ -59,6 +63,17 @@ const Contact = () => {
   };
 
   const update = async (contactId: string, contactInfos: any) => {
+    if (
+      !contactId ||
+      !contactInfos ||
+      isFetching ||
+      isDeleting ||
+      isUpdating ||
+      isCreating
+    ) {
+      return;
+    }
+
     methods.clearErrors();
     const validated = await methods.trigger();
     if (!validated) {
@@ -81,6 +96,10 @@ const Contact = () => {
   };
 
   const create = async (contactInfos: any) => {
+    if (!contactInfos || isFetching || isDeleting || isUpdating || isCreating) {
+      return;
+    }
+
     methods.clearErrors();
     const validated = await methods.trigger();
     if (!validated) {
