@@ -5,6 +5,7 @@ import FormRow from "../common/FormRow";
 import NameField from "./NameField";
 import JobTitleField from "./JobTitleField";
 import EmailField from "./EmailField";
+import AddressField from "./AddressField";
 
 type Props = {
   loading?: boolean;
@@ -24,10 +25,7 @@ const ContactForm = React.memo<Props>((props) => {
       <NameField />
       <JobTitleField />
       <EmailField />
-
-      <FormRow title="Address">
-        <FormInput name="address" data-testid="address-input" />
-      </FormRow>
+      <AddressField />
 
       <FormRow title="Phone Numbers">
         <button type="button" onClick={() => append({ text: "" }, true)}>
