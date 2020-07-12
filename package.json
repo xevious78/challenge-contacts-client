@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-phone-number-input": "^3.0.4",
     "@types/react-router-dom": "^5.1.5",
+    "@types/url-join": "^4.0.0",
     "add": "^2.0.6",
     "antd": "^4.4.1",
     "axios": "^0.19.2",
@@ -26,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2",
+    "url-join": "^4.0.1",
     "yarn": "^1.22.4"
   },
   "scripts": {

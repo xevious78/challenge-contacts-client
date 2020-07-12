@@ -78,6 +78,7 @@ const PictureField = React.memo(() => {
       {pictureId && <div>{pictureId}</div>}
       {isUploading && "Uploading"}
       {picturePreviewURL && <img src={picturePreviewURL} />}
+      {pictureId && <img src={API.image.getImageURL(pictureId)} />}
     </div>
   );
 });

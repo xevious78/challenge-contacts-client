@@ -1,4 +1,4 @@
-import Request from "./request";
+import Request, { URLJoin } from "./request";
 import { Contact, ContactInfos } from "../types";
 
 interface GetContactsData {
@@ -35,6 +35,10 @@ const API = {
           "Content-Type": "multipart/form-data",
         },
       });
+    },
+
+    getImageURL: (imageId: string) => {
+      return URLJoin("image", imageId);
     },
   },
   contact: {
