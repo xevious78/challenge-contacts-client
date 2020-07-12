@@ -4,8 +4,11 @@ import FormRow from "../common/FormRow";
 import { FormInput, FormPhoneInput } from "../common/FormComponents";
 
 const MAX_PHONES = 10;
-const MAX_LENGTH = 100;
-const ERRORS: { [id: string]: string } = {};
+const MAX_LENGTH = 20;
+const ERRORS: { [id: string]: string } = {
+  maxLength: `A phone number should be smaller than ${MAX_LENGTH} characters`,
+  required: `A phone number cannot be empty`,
+};
 
 const PhoneNumbersField = React.memo(() => {
   const { errors } = useFormContext();
@@ -16,19 +19,19 @@ const PhoneNumbersField = React.memo(() => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
-  const renderError = () => {
-    const error = errors.phoneNumbers;
+  const renderInputError = (index: number) => {
+    const error = errors.phoneNumbers?.[index]?.text;
     if (!error) {
       return;
     }
 
     const content = ERRORS[error.type] ?? ERRORS.default;
 
-    return <span data-testid="phoneNumbers-error">{content}</span>;
+    return <span data-testid="phoneNumber-error">{content}</span>;
   };
 
   return (
-    <FormRow title="Phone Numbers" errorMessage={renderError()}>
+    <FormRow title="Phone Numbers">
       <button
         type="button"
         disabled={fields.length > MAX_PHONES}
@@ -41,7 +44,9 @@ const PhoneNumbersField = React.memo(() => {
           <FormPhoneInput
             name={`phoneNumbers[${index}].text`}
             data-testid="phone-input"
+            rules={{ required: true, maxLength: MAX_LENGTH }}
           />
+          {renderInputError(index)}
           <button onClick={() => remove(index)}>Delete</button>
         </div>
       ))}
