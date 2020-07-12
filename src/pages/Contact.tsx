@@ -153,6 +153,8 @@ const Contact = () => {
     await delay(2000);
     try {
       await API.contact.deleteContact(contactId);
+      ContactStore.removeContact(contactId);
+
       history.replace(`/`);
     } catch (e) {
       //TODO: Error

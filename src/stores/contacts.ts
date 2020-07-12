@@ -10,8 +10,16 @@ export const ContactStore = types
     isFetching: false,
 
     //
-    contacts: types.array(ContactModel),
+    contactsMap: types.map(ContactModel),
   })
+  .views((self) => ({
+    get sortedContacts() {
+      const contacts: Array<Contact> = [];
+      self.contactsMap.forEach((contact: Contact) => contacts.push(contact));
+      contacts.sort((a: Contact, b: Contact) => a.name.localeCompare(b.name));
+      return contacts;
+    },
+  }))
   .actions((self) => ({
     ///////////////////////////////////////////
     // Network
@@ -23,7 +31,9 @@ export const ContactStore = types
 
       try {
         const response = yield API.contact.getContacts();
-        self.contacts = response.data.contacts;
+        response.data.contacts.forEach((contact: Contact) =>
+          self.contactsMap.set(contact.id, contact)
+        );
       } catch (e) {
         //TODO: Error
       } finally {
@@ -36,10 +46,12 @@ export const ContactStore = types
     ///////////////////////////////////////////
     /* Insert contact*/
     addContact: (contact: Contact) => {
-      self.contacts.push(contact);
-      self.contacts.sort((a: Contact, b: Contact) =>
-        a.name.toLocaleUpperCase().localeCompare(b.name.toLocaleUpperCase())
-      );
+      self.contactsMap.set(contact.id, contact);
+    },
+
+    /* Remove contact */
+    removeContact: (contactId: string) => {
+      self.contactsMap.delete(contactId);
     },
   }));
 

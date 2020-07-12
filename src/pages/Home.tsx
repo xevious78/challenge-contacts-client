@@ -39,9 +39,9 @@ const Home = observer(() => {
       <Button type="primary" onClick={handleNewContactButtonClick}>
         New Contact
       </Button>
-      <div>Number of contacts: {ContactStore.contacts.length}</div>
+      <div>Number of contacts: {ContactStore.sortedContacts.length}</div>
       <div>
-        {ContactStore.contacts.map((contact: Contact) => (
+        {ContactStore.sortedContacts.map((contact: Contact) => (
           <ContactCell
             key={contact.id}
             contact={contact}
