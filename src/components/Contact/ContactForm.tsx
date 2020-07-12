@@ -8,6 +8,13 @@ type Props = {
   disabled?: boolean;
 };
 
+const NAME_MAX_LENGTH = 100;
+const NAME_ERRORS: { [id: string]: string } = {
+  required: "Name is required",
+  maxLength: `Name should be smaller than ${NAME_MAX_LENGTH} characters`,
+  default: "Name is invalid",
+};
+
 const ContactForm = React.memo<Props>((props) => {
   const { errors } = useFormContext();
 
@@ -18,17 +25,23 @@ const ContactForm = React.memo<Props>((props) => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const renderNameError = () => {
+    const nameError = errors.name;
+    if (!nameError) {
+      return;
+    }
+
+    const content = NAME_ERRORS[nameError.type] ?? NAME_ERRORS.default;
+
+    return <span data-testid="name-error">{content}</span>;
+  };
+
   return (
     <div>
-      <FormRow
-        title="Name"
-        errorMessage={
-          errors.name && <span data-testid="name-error">Name is required</span>
-        }
-      >
+      <FormRow title="Name" errorMessage={renderNameError()}>
         <FormInput
           name="name"
-          rules={{ required: true }}
+          rules={{ required: true, maxLength: NAME_MAX_LENGTH }}
           data-testid="name-input"
         />
       </FormRow>
