@@ -6,4 +6,25 @@
       border-bottom: 1px solid rgb(230, 230, 230);
     }
   }
+
+  &__loading-container {
+    text-align: center;
+    font-size: 32px;
+  }
+}
+
+.home-page-toolbar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0 16px;
+
+  &__title {
+    flex: 1;
+    margin: 0px;
+  }
+
+  &__buttons {
+    margin-left: 16px;
+  }
 }
