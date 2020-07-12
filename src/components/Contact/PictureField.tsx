@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { useDropzone, DropzoneOptions } from "react-dropzone";
 import API from "../../service/api";
 import delay from "../../utils/delay";
-import { previewImage } from "antd/lib/upload/utils";
+import { Button } from "antd";
 
 const NAME = "pictureId";
 
@@ -65,21 +65,32 @@ const PictureField = React.memo(() => {
   }, [register, unregister]);
 
   ///////////////////////////////////////////
+  // Button Cb
+  ///////////////////////////////////////////
+
+  const handleDeleteClick = () => {
+    setValue(NAME, null);
+  };
+
+  ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} name="image" />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      )}
-      {pictureId && <div>{pictureId}</div>}
-      {isUploading && "Uploading"}
-      {picturePreviewURL && <img src={picturePreviewURL} />}
-      {pictureId && <img src={API.image.getImageURL(pictureId)} />}
-    </div>
+    <>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} name="image" />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <p>Drag 'n' drop some files here, or click to select files</p>
+        )}
+        {pictureId && <div>{pictureId}</div>}
+        {isUploading && "Uploading"}
+        {picturePreviewURL && <img src={picturePreviewURL} />}
+        {pictureId && <img src={API.image.getImageURL(pictureId)} />}
+      </div>
+      {pictureId && <Button onClick={handleDeleteClick}>Delete</Button>}
+    </>
   );
 });
 
