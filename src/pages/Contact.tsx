@@ -69,15 +69,34 @@ const Contact = () => {
     try {
       const response = await API.contact.getContact(contactId);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
-    } catch (e) {
-      //TODO: Error
-      Modal.error({
-        title: "Error",
-      });
-    } finally {
+
       setIsFetching(false);
+    } catch (e) {
+      // 404 error
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => {
+            setIsFetching(false);
+            history.push("/");
+          },
+        });
+      } else {
+        // Generic error
+        Modal.error({
+          title: "An error occured while fetching the contact",
+
+          okText: "Go back",
+          onOk: () => {
+            setIsFetching(false);
+            history.push("/");
+          },
+        });
+      }
     }
   };
 
@@ -105,14 +124,35 @@ const Contact = () => {
     try {
       const response = await API.contact.updateContact(contactId, contactInfos);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
       ContactStore.updateContact(contact);
+
       history.push(`/`);
-    } catch (e) {
-      //TODO: Error
-    } finally {
       setIsUpdating(false);
+    } catch (e) {
+      // 404 Error
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => {
+            setIsUpdating(false);
+            history.push("/");
+          },
+        });
+      } else {
+        // Generic Error
+        Modal.error({
+          title: "An error occured while updating the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsUpdating(false);
+            history.push("/");
+          },
+        });
+      }
     }
   };
 
@@ -133,15 +173,23 @@ const Contact = () => {
     try {
       const response = await API.contact.createContact(contactInfos);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
       ContactStore.addContact(contact);
 
+      setIsCreating(false);
       history.push(`/`);
     } catch (e) {
-      //TODO: Error
-    } finally {
-      setIsCreating(false);
+      // Generic error
+      Modal.error({
+        title: "An error occured while creating the contact",
+        okText: "Go back",
+        onOk: () => {
+          setIsCreating(false);
+          history.push("/");
+        },
+      });
     }
   };
 
@@ -157,11 +205,30 @@ const Contact = () => {
       await API.contact.deleteContact(contactId);
       ContactStore.removeContact(contactId);
 
+      setIsDeleting(false);
       history.replace(`/`);
     } catch (e) {
-      //TODO: Error
-    } finally {
-      setIsDeleting(false);
+      // 404 error
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => {
+            setIsDeleting(false);
+            history.push("/");
+          },
+        });
+      } else {
+        // Generic error
+        Modal.error({
+          title: "An error occured while deleting the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsDeleting(false);
+            history.push("/");
+          },
+        });
+      }
     }
   };
 
