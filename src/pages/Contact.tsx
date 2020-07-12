@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API from "../service/api";
 import { Modal, Button } from "antd";
@@ -34,17 +34,20 @@ const Contact = () => {
   // Form methods
   ///////////////////////////////////////////
 
-  const resetForm = (contact: any) => {
-    methods.reset({
-      name: contact.name,
-      jobTitle: contact.jobTitle,
-      email: contact.email,
-      address: contact.address,
-      phoneNumbers: contact.phoneNumbers.map((a: string) => ({
-        text: a,
-      })),
-    });
-  };
+  const resetForm = useCallback(
+    (contact: any) => {
+      methods.reset({
+        name: contact.name,
+        jobTitle: contact.jobTitle,
+        email: contact.email,
+        address: contact.address,
+        phoneNumbers: contact.phoneNumbers.map((a: string) => ({
+          text: a,
+        })),
+      });
+    },
+    [methods]
+  );
 
   const formValuesToContactInfos = (data: FormValues) => ({
     name: data.name,
@@ -58,47 +61,50 @@ const Contact = () => {
   ///////////////////////////////////////////
   // Network
   ///////////////////////////////////////////
-  const fetch = async (contactId: string) => {
-    if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
-      return;
-    }
-
-    setIsFetching(true);
-    await delay(2000);
-
-    try {
-      const response = await API.contact.getContact(contactId);
-      const { contact } = response.data;
-
-      setContact(contact);
-      resetForm(contact);
-
-      setIsFetching(false);
-    } catch (e) {
-      // 404 error
-      if (e?.response?.status === 404) {
-        Modal.error({
-          title: "This contact does not exist",
-          okText: "Go back",
-          onOk: () => {
-            setIsFetching(false);
-            history.push("/");
-          },
-        });
-      } else {
-        // Generic error
-        Modal.error({
-          title: "An error occured while fetching the contact",
-
-          okText: "Go back",
-          onOk: () => {
-            setIsFetching(false);
-            history.push("/");
-          },
-        });
+  const fetch = useCallback(
+    async (contactId: string) => {
+      if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
+        return;
       }
-    }
-  };
+
+      setIsFetching(true);
+      await delay(2000);
+
+      try {
+        const response = await API.contact.getContact(contactId);
+        const { contact } = response.data;
+
+        setContact(contact);
+        resetForm(contact);
+
+        setIsFetching(false);
+      } catch (e) {
+        // 404 error
+        if (e?.response?.status === 404) {
+          Modal.error({
+            title: "This contact does not exist",
+            okText: "Go back",
+            onOk: () => {
+              setIsFetching(false);
+              history.push("/");
+            },
+          });
+        } else {
+          // Generic error
+          Modal.error({
+            title: "An error occured while fetching the contact",
+
+            okText: "Go back",
+            onOk: () => {
+              setIsFetching(false);
+              history.push("/");
+            },
+          });
+        }
+      }
+    },
+    [isFetching, isDeleting, isUpdating, isCreating, history, resetForm]
+  );
 
   const update = async (contactId: string, contactInfos: any) => {
     if (
@@ -239,7 +245,7 @@ const Contact = () => {
     if (contactId && !contact) {
       fetch(contactId);
     }
-  }, [contactId, contact]);
+  }, [contactId, contact, fetch]);
 
   ///////////////////////////////////////////
   // Toolbar Cb
