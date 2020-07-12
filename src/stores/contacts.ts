@@ -5,9 +5,15 @@ import { Contact } from "../types";
 
 const ContactModel = types.frozen();
 
+export enum ContactStoreFetchError {
+  NO_ERROR = 0,
+  OTHER_ERROR,
+}
+
 export const ContactStore = types
   .model({
     isFetching: false,
+    fetchError: ContactStoreFetchError.NO_ERROR,
 
     //
     contactsMap: types.map(ContactModel),
@@ -26,6 +32,7 @@ export const ContactStore = types
     ///////////////////////////////////////////
     /* Fetch contacts from server */
     fetch: flow(function* () {
+      self.fetchError = ContactStoreFetchError.NO_ERROR;
       self.isFetching = true;
       yield delay(2000);
 
@@ -35,7 +42,7 @@ export const ContactStore = types
           self.contactsMap.set(contact.id, contact)
         );
       } catch (e) {
-        //TODO: Error
+        self.fetchError = ContactStoreFetchError.OTHER_ERROR;
       } finally {
         self.isFetching = false;
       }
@@ -62,7 +69,7 @@ export const ContactStore = types
       if (!self.contactsMap.get(contact.id)) {
         return;
       }
-      
+
       self.contactsMap.set(contact.id, contact);
     },
   }));
