@@ -93,21 +93,26 @@ const Home = observer(() => {
   ///////////////////////////////////////////
   return (
     <div data-testid="home-page">
-      <Button type="primary" onClick={handleNewContactButtonClick}>
-        New Contact
-      </Button>
-      <div>Number of contacts: {ContactStore.sortedContacts.length}</div>
-      <div>
-        {ContactStore.sortedContacts.map((contact: Contact) => (
-          <ContactCell
-            key={contact.id}
-            isDeleting={contact.id === isDeletingContactId}
-            deleteDisabled={!!isDeletingContactId}
-            contact={contact}
-            onClick={handleContactCellClick}
-            onDeleteClick={handleContactCellDeleteClick}
-          />
-        ))}
+      <div className="toolbar">
+        <div>Number of contacts: {ContactStore.sortedContacts.length}</div>
+
+        <Button type="primary" onClick={handleNewContactButtonClick}>
+          New Contact
+        </Button>
+      </div>
+      <div className="container">
+        <div>
+          {ContactStore.sortedContacts.map((contact: Contact) => (
+            <ContactCell
+              key={contact.id}
+              isDeleting={contact.id === isDeletingContactId}
+              deleteDisabled={!!isDeletingContactId}
+              contact={contact}
+              onClick={handleContactCellClick}
+              onDeleteClick={handleContactCellDeleteClick}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
