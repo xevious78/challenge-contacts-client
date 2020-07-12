@@ -39,9 +39,10 @@ const ContactCell = React.memo<Props>((props) => {
   // Render
   ///////////////////////////////////////////
   return (
-    <div onClick={handleClick}>
+    <div data-testid="contact-cell" onClick={handleClick}>
       {contact.name}
       <Button
+        data-testid="delete-button"
         loading={isDeleting}
         disabled={isDeleting || deleteDisabled}
         onClick={handleDeleteClick}
