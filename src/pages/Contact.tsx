@@ -7,6 +7,9 @@ import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
+import ClassName from "../utils/classname";
+import styles from "./Contact.module.scss";
+import { LoadingOutlined } from "@ant-design/icons";
 
 type FormValues = {
   pictureId: string;
@@ -32,6 +35,8 @@ const ContactPage = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<Contact | null>(null);
+
+  const formRef = React.createRef<HTMLFormElement>();
 
   ///////////////////////////////////////////
   // Form methods
@@ -263,6 +268,10 @@ const ContactPage = () => {
   // Toolbar Cb
   ///////////////////////////////////////////
 
+  const handleSubmitClick = () => {
+    formRef.current?.dispatchEvent(new Event("submit"));
+  };
+
   const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
     console.log(data);
     const contactInfos = formValuesToContactInfos(data);
@@ -281,14 +290,32 @@ const ContactPage = () => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "contact-page");
+  const toolbarCn = ClassName(styles, "contact-page-toolbar");
 
-  const renderToolbar = () => {
+  const renderToolbarTitle = () => {
+    if (isFetching) {
+      return (
+        <span>
+          <LoadingOutlined spin /> Loading contact...
+        </span>
+      );
+    }
+
+    if (!contactId) {
+      return "New contact";
+    }
+
+    return <i>{contact?.name}</i>;
+  };
+
+  const renderToolbarButtons = () => {
     if (contactId) {
       return (
-        <div>
+        <>
           <Button
             type="primary"
-            htmlType="submit"
+            onClick={handleSubmitClick}
             disabled={
               isFetching || isUpdating || isDeleting || isUploadingPicture
             }
@@ -305,35 +332,49 @@ const ContactPage = () => {
           >
             Delete
           </Button>
-        </div>
+        </>
       );
     } else {
       return (
-        <div>
+        <>
           <Button
             type="primary"
-            htmlType="submit"
+            onClick={handleSubmitClick}
             disabled={isUpdating || isUploadingPicture}
             loading={isCreating}
           >
             Create
           </Button>
-        </div>
+        </>
       );
     }
   };
 
   return (
-    <div data-testid="contact-page">
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <div>
-            <ContactForm onUploadPictureChange={handleUploadPictureChange} />
+    <FormProvider {...methods}>
+      <div data-testid="contact-page">
+        <div className="container">
+          <div className={cn("form")}>
+            <form ref={formRef} onSubmit={methods.handleSubmit(handleSubmit)}>
+              <div className="toolbar">
+                <div className={toolbarCn()}>
+                  <h3 className={toolbarCn("title")}>{renderToolbarTitle()}</h3>
+
+                  <div className={toolbarCn("buttons")}>
+                    {renderToolbarButtons()}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <ContactForm
+                  onUploadPictureChange={handleUploadPictureChange}
+                />
+              </div>
+            </form>
           </div>
-          <div>{renderToolbar()}</div>
-        </form>
-      </FormProvider>
-    </div>
+        </div>
+      </div>
+    </FormProvider>
   );
 };
 
