@@ -107,7 +107,7 @@ const Home = observer(() => {
     }
 
     return `${ContactStore.sortedContacts.length} contact${
-      ContactStore.sortedContacts.length !== 1 && "s"
+      ContactStore.sortedContacts.length !== 1 ? "s" : ""
     }`;
   };
 
