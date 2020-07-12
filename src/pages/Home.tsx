@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { observer, useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import { useStores } from "../stores";
 import ContactCell from "../components/Contact/ContactCell";
 import { Contact } from "../types";
