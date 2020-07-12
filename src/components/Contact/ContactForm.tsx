@@ -1,11 +1,9 @@
 import React from "react";
-import { useFieldArray } from "react-hook-form";
-import { FormInput, FormPhoneInput } from "../common/FormComponents";
-import FormRow from "../common/FormRow";
 import NameField from "./NameField";
 import JobTitleField from "./JobTitleField";
 import EmailField from "./EmailField";
 import AddressField from "./AddressField";
+import PhoneNumbersField from "./PhoneNumbersField";
 
 type Props = {
   loading?: boolean;
@@ -13,10 +11,6 @@ type Props = {
 };
 
 const ContactForm = React.memo<Props>((props) => {
-  const { fields, append, remove } = useFieldArray({
-    name: "phoneNumbers",
-  });
-
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
@@ -26,21 +20,7 @@ const ContactForm = React.memo<Props>((props) => {
       <JobTitleField />
       <EmailField />
       <AddressField />
-
-      <FormRow title="Phone Numbers">
-        <button type="button" onClick={() => append({ text: "" }, true)}>
-          +
-        </button>
-        {fields.map((field, index) => (
-          <div key={field.id} data-testid="phone-input-container">
-            <FormPhoneInput
-              name={`phoneNumbers[${index}].text`}
-              data-testid="phone-input"
-            />
-            <button onClick={() => remove(index)}>Delete</button>
-          </div>
-        ))}
-      </FormRow>
+      <PhoneNumbersField />
     </div>
   );
 });
