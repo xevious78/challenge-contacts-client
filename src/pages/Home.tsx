@@ -8,6 +8,8 @@ import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
 import { ContactStoreFetchError } from "../stores/contacts";
+import styles from "./Home.module.scss";
+import ClassName from "../utils/classname";
 
 const Home = observer(() => {
   const history = useHistory();
@@ -91,8 +93,10 @@ const Home = observer(() => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "home-page");
+
   return (
-    <div data-testid="home-page">
+    <div className={cn()} data-testid="home-page">
       <div className="toolbar">
         <div>Number of contacts: {ContactStore.sortedContacts.length}</div>
 
@@ -101,7 +105,7 @@ const Home = observer(() => {
         </Button>
       </div>
       <div className="container">
-        <div>
+        <div className={cn("contacts")}>
           {ContactStore.sortedContacts.map((contact: Contact) => (
             <ContactCell
               key={contact.id}
