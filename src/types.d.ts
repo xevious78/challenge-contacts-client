@@ -1,5 +1,6 @@
 export type ContactInfos = {
   name: string;
+  pictureId?: string;
   jobTitle?: string;
   email?: string;
   address?: string;

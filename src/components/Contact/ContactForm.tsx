@@ -1,4 +1,5 @@
 import React from "react";
+import PictureField from "./PictureField";
 import NameField from "./NameField";
 import JobTitleField from "./JobTitleField";
 import EmailField from "./EmailField";
@@ -16,6 +17,7 @@ const ContactForm = React.memo<Props>((props) => {
   ///////////////////////////////////////////
   return (
     <div>
+      <PictureField />
       <NameField />
       <JobTitleField />
       <EmailField />

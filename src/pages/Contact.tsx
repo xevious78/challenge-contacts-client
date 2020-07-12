@@ -9,6 +9,7 @@ import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
 
 type FormValues = {
+  pictureId: string;
   name: string;
   jobTitle: string;
   email: string;
@@ -38,6 +39,7 @@ const ContactPage = () => {
   const resetForm = useCallback(
     (contact: Contact) => {
       methods.reset({
+        pictureId: contact.pictureId,
         name: contact.name,
         jobTitle: contact.jobTitle,
         email: contact.email,
@@ -51,6 +53,7 @@ const ContactPage = () => {
   );
 
   const formValuesToContactInfos = (data: FormValues) => ({
+    pictureId: data.pictureId,
     name: data.name,
     jobTitle: data.jobTitle,
     email: data.email,
