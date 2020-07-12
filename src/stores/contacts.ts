@@ -53,6 +53,10 @@ export const ContactStore = types
     removeContact: (contactId: string) => {
       self.contactsMap.delete(contactId);
     },
+
+    updateContact: (contact: Contact) => {
+      self.contactsMap.set(contact.id, contact);
+    },
   }));
 
 export const initializeContactStore = () => {

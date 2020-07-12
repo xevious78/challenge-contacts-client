@@ -107,6 +107,8 @@ const Contact = () => {
       const { contact } = response.data;
       setContact(contact);
       resetForm(contact);
+      ContactStore.updateContact(contact);
+      history.push(`/`);
     } catch (e) {
       //TODO: Error
     } finally {
