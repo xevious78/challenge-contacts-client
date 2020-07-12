@@ -13,6 +13,7 @@ $toolbar-height: 60px;
   left: 0px;
   right: 0px;
   height: $toolbar-height;
+  z-index: 10000;
 
   background-color: white;
   box-shadow: 0px 1px 20px rgba(black, 0.1);
