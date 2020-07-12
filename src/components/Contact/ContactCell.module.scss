@@ -1,0 +1,21 @@
+.contact-cell {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  background: white;
+  padding: 8px 12px;
+
+  &:hover {
+    background: rgb(250, 250, 250);
+  }
+
+  &__name {
+    flex: 1;
+    color: rgb(50, 50, 50);
+  }
+
+  &__buttons {
+    margin-left: 8px;
+  }
+}
