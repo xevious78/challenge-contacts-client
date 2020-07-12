@@ -72,10 +72,13 @@ const Contact = () => {
       setContact(contact);
       resetForm(contact);
     } catch (e) {
-      //TODO: Error
-      Modal.error({
-        title: "Error",
-      });
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => history.push("/"),
+        });
+      }
     } finally {
       setIsFetching(false);
     }
