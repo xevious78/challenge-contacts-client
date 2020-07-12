@@ -28,11 +28,17 @@ const Home = observer(() => {
     try {
       await API.contact.deleteContact(contactId);
       ContactStore.removeContact(contactId);
-    } catch (e) {
-      //TODO: Error
-      Modal.error({ title: "Error" });
-    } finally {
       setIsDeletingContactId(null);
+    } catch (e) {
+      Modal.error({
+        title: `An error occured while deleting "${
+          ContactStore.contactsMap.get(contactId).name
+        }"`,
+        okText: "Okay",
+        onOk: () => {
+          setIsDeletingContactId(null);
+        },
+      });
     }
   };
 
