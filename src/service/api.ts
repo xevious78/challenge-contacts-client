@@ -21,7 +21,22 @@ interface DeleteContactData {
   contact: Contact;
 }
 
+interface UploadImageData {
+  imageId: string;
+}
+
 const API = {
+  image: {
+    uploadImage: async (image: File) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      return Request.post<UploadImageData>("/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+  },
   contact: {
     getContacts: async () => {
       return Request.get<GetContactsData>("/contacts");
