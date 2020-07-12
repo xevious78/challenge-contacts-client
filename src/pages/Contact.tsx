@@ -195,11 +195,28 @@ const Contact = () => {
       await API.contact.deleteContact(contactId);
       ContactStore.removeContact(contactId);
 
+      setIsDeleting(false);
       history.replace(`/`);
     } catch (e) {
-      //TODO: Error
-    } finally {
-      setIsDeleting(false);
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => {
+            setIsDeleting(false);
+            history.push("/");
+          },
+        });
+      } else {
+        Modal.error({
+          title: "An error occured while deleting the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsDeleting(false);
+            history.push("/");
+          },
+        });
+      }
     }
   };
 
