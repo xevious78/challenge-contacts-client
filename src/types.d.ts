@@ -3,7 +3,7 @@ export type ContactInfos = {
   jobTitle?: string;
   email?: string;
   address?: string;
-  phoneNumbers: [string];
+  phoneNumbers: Array<string>;
 };
 
 export type Contact = { id: string } & ContactInfos;

@@ -6,16 +6,17 @@ import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
+import { Contact, ContactInfos } from "../types";
 
 type FormValues = {
   name: string;
   jobTitle: string;
   email: string;
   address: string;
-  phoneNumbers?: [{ text: string }];
+  phoneNumbers?: Array<{ text: string }>;
 };
 
-const Contact = () => {
+const ContactPage = () => {
   const { ContactStore } = useStores();
   const { contactId } = useParams();
   const history = useHistory();
@@ -28,14 +29,14 @@ const Contact = () => {
 
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const [contact, setContact] = useState<any | null>(null);
+  const [contact, setContact] = useState<Contact | null>(null);
 
   ///////////////////////////////////////////
   // Form methods
   ///////////////////////////////////////////
 
   const resetForm = useCallback(
-    (contact: any) => {
+    (contact: Contact) => {
       methods.reset({
         name: contact.name,
         jobTitle: contact.jobTitle,
@@ -106,7 +107,7 @@ const Contact = () => {
     [isFetching, isDeleting, isUpdating, isCreating, history, resetForm]
   );
 
-  const update = async (contactId: string, contactInfos: any) => {
+  const update = async (contactId: string, contactInfos: ContactInfos) => {
     if (
       !contactId ||
       !contactInfos ||
@@ -162,7 +163,7 @@ const Contact = () => {
     }
   };
 
-  const create = async (contactInfos: any) => {
+  const create = async (contactInfos: ContactInfos) => {
     if (!contactInfos || isFetching || isDeleting || isUpdating || isCreating) {
       return;
     }
@@ -321,4 +322,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactPage;
