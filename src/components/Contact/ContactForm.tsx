@@ -2,17 +2,11 @@ import React from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { FormInput, FormPhoneInput } from "../common/FormComponents";
 import FormRow from "../common/FormRow";
+import NameField from "./NameField";
 
 type Props = {
   loading?: boolean;
   disabled?: boolean;
-};
-
-const NAME_MAX_LENGTH = 100;
-const NAME_ERRORS: { [id: string]: string } = {
-  required: "Name is required",
-  maxLength: `Name should be smaller than ${NAME_MAX_LENGTH} characters`,
-  default: "Name is invalid",
 };
 
 const ContactForm = React.memo<Props>((props) => {
@@ -25,26 +19,9 @@ const ContactForm = React.memo<Props>((props) => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
-  const renderNameError = () => {
-    const nameError = errors.name;
-    if (!nameError) {
-      return;
-    }
-
-    const content = NAME_ERRORS[nameError.type] ?? NAME_ERRORS.default;
-
-    return <span data-testid="name-error">{content}</span>;
-  };
-
   return (
     <div>
-      <FormRow title="Name" errorMessage={renderNameError()}>
-        <FormInput
-          name="name"
-          rules={{ required: true, maxLength: NAME_MAX_LENGTH }}
-          data-testid="name-input"
-        />
-      </FormRow>
+      <NameField />
 
       <FormRow title="Job Title">
         <FormInput name="jobTitle" data-testid="jobTitle-input" />
