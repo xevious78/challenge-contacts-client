@@ -3,8 +3,10 @@ import { observer, useObserver } from "mobx-react";
 import { useStores } from "../stores";
 import ContactCell from "../components/Contact/ContactCell";
 import { Contact } from "../types";
+import { useHistory } from "react-router-dom";
 
 const Home = observer(() => {
+  const history = useHistory();
   const { ContactStore } = useStores();
 
   ///////////////////////////////////////////
@@ -19,7 +21,7 @@ const Home = observer(() => {
   ///////////////////////////////////////////
 
   const handleContactCellClick = (contact: Contact) => {
-    console.log(contact);
+    history.push(`/contact/${contact.id}`);
   };
 
   ///////////////////////////////////////////
