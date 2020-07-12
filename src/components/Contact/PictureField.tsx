@@ -34,6 +34,9 @@ const PictureField = React.memo(() => {
   const onDrop = useCallback(
     async (droppedFiles) => {
       const image = droppedFiles[0];
+      if (!image) {
+        return;
+      }
 
       setIsUploading(true);
       setPicturePreviewURL(URL.createObjectURL(image));
@@ -53,6 +56,7 @@ const PictureField = React.memo(() => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*",
     onDrop,
+    disabled: isUploading,
   });
 
   ///////////////////////////////////////////
