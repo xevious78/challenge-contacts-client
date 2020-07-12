@@ -10,6 +10,13 @@ import { AppRoutes } from "../../Routes";
 import userEvent from "@testing-library/user-event";
 import Modal from "antd/lib/modal/Modal";
 
+jest.mock("../../service/api", () => ({
+  contact: {
+    getContact: jest.fn(),
+    updateContact: jest.fn(),
+  },
+}));
+
 describe("ContactPage", () => {
   const setup = (contactId) => {
     const history = createMemoryHistory();

@@ -169,11 +169,17 @@ const Contact = () => {
       resetForm(contact);
       ContactStore.addContact(contact);
 
+      setIsCreating(false);
       history.push(`/`);
     } catch (e) {
-      //TODO: Error
-    } finally {
-      setIsCreating(false);
+      Modal.error({
+        title: "An error occured while creating the contact",
+        okText: "Go back",
+        onOk: () => {
+          setIsCreating(false);
+          history.push("/");
+        },
+      });
     }
   };
 
