@@ -3,6 +3,7 @@ import { useFormContext, useFieldArray } from "react-hook-form";
 import { FormInput, FormPhoneInput } from "../common/FormComponents";
 import FormRow from "../common/FormRow";
 import NameField from "./NameField";
+import JobTitleField from "./JobTitleField";
 
 type Props = {
   loading?: boolean;
@@ -22,11 +23,8 @@ const ContactForm = React.memo<Props>((props) => {
   return (
     <div>
       <NameField />
-
-      <FormRow title="Job Title">
-        <FormInput name="jobTitle" data-testid="jobTitle-input" />
-      </FormRow>
-
+      <JobTitleField />
+      
       <FormRow
         title="Email"
         errorMessage={
