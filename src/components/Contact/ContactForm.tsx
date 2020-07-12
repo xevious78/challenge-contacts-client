@@ -43,10 +43,8 @@ const ContactForm = React.memo<Props>((props) => {
           type="email"
           rules={{
             required: false,
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "invalid email address",
-            },
+            validate: (value) =>
+              !value || /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value),
           }}
           data-testid="email-input"
         />
