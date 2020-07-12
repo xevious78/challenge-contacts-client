@@ -1,17 +1,22 @@
 import { types, flow } from "mobx-state-tree";
 import API from "../service/api";
 import delay from "../utils/delay";
+import { Contact } from "../types";
 
-const Contact = types.frozen();
+const ContactModel = types.frozen();
 
 export const ContactStore = types
   .model({
     isFetching: false,
 
     //
-    contacts: types.array(Contact),
+    contacts: types.array(ContactModel),
   })
   .actions((self) => ({
+    ///////////////////////////////////////////
+    // Network
+    ///////////////////////////////////////////
+    /* Fetch contacts from server */
     fetch: flow(function* () {
       self.isFetching = true;
       yield delay(2000);
@@ -25,6 +30,17 @@ export const ContactStore = types
         self.isFetching = false;
       }
     }),
+
+    ///////////////////////////////////////////
+    // Modify Store
+    ///////////////////////////////////////////
+    /* Insert contact*/
+    addContact: (contact: Contact) => {
+      self.contacts.push(contact);
+      self.contacts.sort((a: Contact, b: Contact) =>
+        a.name.toLocaleUpperCase().localeCompare(b.name.toLocaleUpperCase())
+      );
+    },
   }));
 
 export const initializeContactStore = () => {
