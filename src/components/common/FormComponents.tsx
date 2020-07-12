@@ -28,6 +28,7 @@ export const FormInput: React.FC<FormInputProps> = ({
 ///////////////////////////////////////////
 // FormPhoneInput
 ///////////////////////////////////////////
+
 type FormPhoneInputProps = {
   "data-testid"?: string;
   name: string;
@@ -43,12 +44,7 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
     name={name}
     rules={rules}
     render={(props: any) => (
-      <PhoneInput
-        {...props}
-        displayInitialValueAsLocalNumber
-        inputComponent={Input}
-        {...rest}
-      />
+      <PhoneInput {...props} displayInitialValueAsLocalNumber {...rest} />
     )}
   />
 );
