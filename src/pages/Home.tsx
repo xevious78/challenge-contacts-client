@@ -4,7 +4,7 @@ import { useStores } from "../stores";
 import ContactCell from "../components/Contact/ContactCell";
 import { Contact } from "../types";
 import { useHistory } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
 
@@ -30,6 +30,7 @@ const Home = observer(() => {
       ContactStore.removeContact(contactId);
     } catch (e) {
       //TODO: Error
+      Modal.error({ title: "Error" });
     } finally {
       setIsDeletingContactId(null);
     }
@@ -64,7 +65,7 @@ const Home = observer(() => {
     if (!!isDeletingContactId) {
       return;
     }
-    
+
     deleteContact(contact.id);
   };
 
