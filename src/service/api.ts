@@ -1,4 +1,4 @@
-import Request from "./request";
+import Request, { URLJoin } from "./request";
 import { Contact, ContactInfos } from "../types";
 
 interface GetContactsData {
@@ -21,7 +21,26 @@ interface DeleteContactData {
   contact: Contact;
 }
 
+interface UploadImageData {
+  imageId: string;
+}
+
 const API = {
+  image: {
+    uploadImage: async (image: File) => {
+      const formData = new FormData();
+      formData.append("image", image);
+      return Request.post<UploadImageData>("/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+
+    getImageURL: (imageId: string) => {
+      return URLJoin("image", imageId);
+    },
+  },
   contact: {
     getContacts: async () => {
       return Request.get<GetContactsData>("/contacts");

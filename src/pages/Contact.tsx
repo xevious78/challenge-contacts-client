@@ -9,6 +9,7 @@ import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
 
 type FormValues = {
+  pictureId: string;
   name: string;
   jobTitle: string;
   email: string;
@@ -22,6 +23,7 @@ const ContactPage = () => {
   const history = useHistory();
 
   const methods = useForm<FormValues>();
+  const [isUploadingPicture, setIsUploadingPicture] = useState<boolean>(false);
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
@@ -38,6 +40,7 @@ const ContactPage = () => {
   const resetForm = useCallback(
     (contact: Contact) => {
       methods.reset({
+        pictureId: contact.pictureId,
         name: contact.name,
         jobTitle: contact.jobTitle,
         email: contact.email,
@@ -51,6 +54,7 @@ const ContactPage = () => {
   );
 
   const formValuesToContactInfos = (data: FormValues) => ({
+    pictureId: data.pictureId,
     name: data.name,
     jobTitle: data.jobTitle,
     email: data.email,
@@ -249,6 +253,13 @@ const ContactPage = () => {
   }, [contactId, contact, fetch]);
 
   ///////////////////////////////////////////
+  // ContactForm Cb
+  ///////////////////////////////////////////
+  const handleUploadPictureChange = (_isUploadingPicture: boolean) => {
+    setIsUploadingPicture(_isUploadingPicture);
+  };
+
+  ///////////////////////////////////////////
   // Toolbar Cb
   ///////////////////////////////////////////
 
@@ -278,13 +289,17 @@ const ContactPage = () => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={isFetching || isUpdating || isDeleting}
+            disabled={
+              isFetching || isUpdating || isDeleting || isUploadingPicture
+            }
             loading={isUpdating}
           >
             Save
           </Button>
           <Button
-            disabled={isFetching || isUpdating || isDeleting}
+            disabled={
+              isFetching || isUpdating || isDeleting || isUploadingPicture
+            }
             loading={isDeleting}
             onClick={handleDeleteClick}
           >
@@ -298,7 +313,7 @@ const ContactPage = () => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={isUpdating}
+            disabled={isUpdating || isUploadingPicture}
             loading={isCreating}
           >
             Create
@@ -313,7 +328,7 @@ const ContactPage = () => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <div>
-            <ContactForm />
+            <ContactForm onUploadPictureChange={handleUploadPictureChange} />
           </div>
           <div>{renderToolbar()}</div>
         </form>
