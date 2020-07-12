@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-number-input";
 // FormInput
 ///////////////////////////////////////////
 type FormInputProps = InputProps & {
+  "data-testid"?: string;
   name: string;
   rules?: ValidationRules;
 };
@@ -28,6 +29,7 @@ export const FormInput: React.FC<FormInputProps> = ({
 // FormPhoneInput
 ///////////////////////////////////////////
 type FormPhoneInputProps = {
+  "data-testid"?: string;
   name: string;
   rules?: ValidationRules;
 };
@@ -45,6 +47,7 @@ export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
         {...props}
         displayInitialValueAsLocalNumber
         inputComponent={Input}
+        {...rest}
       />
     )}
   />

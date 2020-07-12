@@ -26,11 +26,15 @@ const ContactForm = React.memo<Props>((props) => {
   return (
     <div>
       <FormRow title="Name" errorMessage={errors.name && "Name is required"}>
-        <FormInput name="name" rules={{ required: true }} />
+        <FormInput
+          name="name"
+          rules={{ required: true }}
+          data-testid="name-input"
+        />
       </FormRow>
 
       <FormRow title="Job Title">
-        <FormInput name="jobTitle" />
+        <FormInput name="jobTitle" data-testid="jobTitle-input" />
       </FormRow>
 
       <FormRow title="Email" errorMessage={errors.email && "Email is invalid"}>
@@ -44,11 +48,12 @@ const ContactForm = React.memo<Props>((props) => {
               message: "invalid email address",
             },
           }}
+          data-testid="email-input"
         />
       </FormRow>
 
       <FormRow title="Address">
-        <FormInput name="address" />
+        <FormInput name="address" data-testid="address-input" />
       </FormRow>
 
       <FormRow title="Phone Numbers">
@@ -56,8 +61,11 @@ const ContactForm = React.memo<Props>((props) => {
           +
         </button>
         {fields.map((field, index) => (
-          <div key={field.id}>
-            <FormPhoneInput name={`phoneNumbers[${index}].text`} />
+          <div key={field.id} data-testid="phone-input-container">
+            <FormPhoneInput
+              name={`phoneNumbers[${index}].text`}
+              data-testid="phone-input"
+            />
             <button onClick={() => remove(index)}>Delete</button>
           </div>
         ))}
