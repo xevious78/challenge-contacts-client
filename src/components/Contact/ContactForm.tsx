@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Input } from "antd";
-import { useFormContext, Controller, useFieldArray } from "react-hook-form";
+import React from "react";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { FormInput, FormPhoneInput } from "../common/FormComponents";
 import FormRow from "../common/FormRow";
 
@@ -10,15 +9,11 @@ type Props = {
 };
 
 const ContactForm = React.memo<Props>((props) => {
-  const { loading = false, disabled = false } = props;
-  const { errors, control } = useFormContext();
+  const { errors } = useFormContext();
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      name: "phoneNumbers", // unique name for your Field Array
-      // keyName: "id", default to "id", you can change the key name
-    }
-  );
+  const { fields, append, remove } = useFieldArray({
+    name: "phoneNumbers",
+  });
 
   ///////////////////////////////////////////
   // Render

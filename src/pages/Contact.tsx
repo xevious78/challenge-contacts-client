@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API from "../service/api";
-import { Modal, Input, Button } from "antd";
+import { Modal, Button } from "antd";
 import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
@@ -27,12 +27,6 @@ const Contact = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<any | null>(null);
-
-  useEffect(() => {
-    if (contactId && !contact) {
-      fetch(contactId);
-    }
-  }, [contactId, contact]);
 
   ///////////////////////////////////////////
   // Form methods
@@ -163,6 +157,15 @@ const Contact = () => {
       setIsDeleting(false);
     }
   };
+
+  ///////////////////////////////////////////
+  // Effects
+  ///////////////////////////////////////////
+  useEffect(() => {
+    if (contactId && !contact) {
+      fetch(contactId);
+    }
+  }, [contactId, contact]);
 
   ///////////////////////////////////////////
   // Toolbar Cb
