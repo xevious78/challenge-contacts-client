@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { useDropzone, DropzoneOptions } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import API from "../../service/api";
 import delay from "../../utils/delay";
 import { Button } from "antd";
@@ -71,7 +71,6 @@ const PictureField = React.memo(() => {
   ///////////////////////////////////////////
   // Button Cb
   ///////////////////////////////////////////
-
   const handleDeleteClick = () => {
     setValue(NAME, null);
   };
