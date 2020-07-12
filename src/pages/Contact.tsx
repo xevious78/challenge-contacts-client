@@ -69,10 +69,13 @@ const Contact = () => {
     try {
       const response = await API.contact.getContact(contactId);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
+
       setIsFetching(false);
     } catch (e) {
+      // 404 error
       if (e?.response?.status === 404) {
         Modal.error({
           title: "This contact does not exist",
@@ -83,6 +86,7 @@ const Contact = () => {
           },
         });
       } else {
+        // Generic error
         Modal.error({
           title: "An error occured while fetching the contact",
 
@@ -120,12 +124,15 @@ const Contact = () => {
     try {
       const response = await API.contact.updateContact(contactId, contactInfos);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
       ContactStore.updateContact(contact);
+
       history.push(`/`);
       setIsUpdating(false);
     } catch (e) {
+      // 404 Error
       if (e?.response?.status === 404) {
         Modal.error({
           title: "This contact does not exist",
@@ -136,6 +143,7 @@ const Contact = () => {
           },
         });
       } else {
+        // Generic Error
         Modal.error({
           title: "An error occured while updating the contact",
           okText: "Go back",
@@ -165,6 +173,7 @@ const Contact = () => {
     try {
       const response = await API.contact.createContact(contactInfos);
       const { contact } = response.data;
+
       setContact(contact);
       resetForm(contact);
       ContactStore.addContact(contact);
@@ -172,6 +181,7 @@ const Contact = () => {
       setIsCreating(false);
       history.push(`/`);
     } catch (e) {
+      // Generic error
       Modal.error({
         title: "An error occured while creating the contact",
         okText: "Go back",
@@ -198,6 +208,7 @@ const Contact = () => {
       setIsDeleting(false);
       history.replace(`/`);
     } catch (e) {
+      // 404 error
       if (e?.response?.status === 404) {
         Modal.error({
           title: "This contact does not exist",
@@ -208,6 +219,7 @@ const Contact = () => {
           },
         });
       } else {
+        // Generic error
         Modal.error({
           title: "An error occured while deleting the contact",
           okText: "Go back",
