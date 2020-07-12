@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   title: string;
-  errorMessage?: string;
+  errorMessage?: string | JSX.Element;
 };
 
 const FormRow: React.FC<Props> = ({ title, errorMessage, children }) => (

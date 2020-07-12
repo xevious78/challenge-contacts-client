@@ -25,7 +25,12 @@ const ContactForm = React.memo<Props>((props) => {
   ///////////////////////////////////////////
   return (
     <div>
-      <FormRow title="Name" errorMessage={errors.name && "Name is required"}>
+      <FormRow
+        title="Name"
+        errorMessage={
+          errors.name && <span data-testid="name-error">Name is required</span>
+        }
+      >
         <FormInput
           name="name"
           rules={{ required: true }}
@@ -37,7 +42,14 @@ const ContactForm = React.memo<Props>((props) => {
         <FormInput name="jobTitle" data-testid="jobTitle-input" />
       </FormRow>
 
-      <FormRow title="Email" errorMessage={errors.email && "Email is invalid"}>
+      <FormRow
+        title="Email"
+        errorMessage={
+          errors.email && (
+            <span data-testid="email-error">Email is invalid</span>
+          )
+        }
+      >
         <FormInput
           name="email"
           type="email"
