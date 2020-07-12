@@ -1,9 +1,10 @@
 import React from "react";
-import { useFormContext, useFieldArray } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { FormInput, FormPhoneInput } from "../common/FormComponents";
 import FormRow from "../common/FormRow";
 import NameField from "./NameField";
 import JobTitleField from "./JobTitleField";
+import EmailField from "./EmailField";
 
 type Props = {
   loading?: boolean;
@@ -11,8 +12,6 @@ type Props = {
 };
 
 const ContactForm = React.memo<Props>((props) => {
-  const { errors } = useFormContext();
-
   const { fields, append, remove } = useFieldArray({
     name: "phoneNumbers",
   });
@@ -24,26 +23,7 @@ const ContactForm = React.memo<Props>((props) => {
     <div>
       <NameField />
       <JobTitleField />
-      
-      <FormRow
-        title="Email"
-        errorMessage={
-          errors.email && (
-            <span data-testid="email-error">Email is invalid</span>
-          )
-        }
-      >
-        <FormInput
-          name="email"
-          type="email"
-          rules={{
-            required: false,
-            validate: (value) =>
-              !value || /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value),
-          }}
-          data-testid="email-input"
-        />
-      </FormRow>
+      <EmailField />
 
       <FormRow title="Address">
         <FormInput name="address" data-testid="address-input" />
