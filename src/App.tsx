@@ -4,7 +4,7 @@ import "./App.css";
 type Props = {};
 
 const App: FunctionComponent<Props> = ({ children }) => {
-  return <div className="App">{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default App;
