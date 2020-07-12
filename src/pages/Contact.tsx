@@ -124,10 +124,27 @@ const Contact = () => {
       resetForm(contact);
       ContactStore.updateContact(contact);
       history.push(`/`);
-    } catch (e) {
-      //TODO: Error
-    } finally {
       setIsUpdating(false);
+    } catch (e) {
+      if (e?.response?.status === 404) {
+        Modal.error({
+          title: "This contact does not exist",
+          okText: "Go back",
+          onOk: () => {
+            setIsUpdating(false);
+            history.push("/");
+          },
+        });
+      } else {
+        Modal.error({
+          title: "An error occured while updating the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsUpdating(false);
+            history.push("/");
+          },
+        });
+      }
     }
   };
 
