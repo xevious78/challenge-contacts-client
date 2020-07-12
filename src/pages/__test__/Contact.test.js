@@ -72,5 +72,43 @@ describe("ContactPage", () => {
         expect(history.location.pathname).toEqual("/");
       });
     });
+
+    describe("Error message", () => {
+      beforeEach(() => {
+        API.contact.getContact = jest.fn(() =>
+          Promise.reject({ response: { status: 400 } })
+        );
+      });
+
+      afterEach(() => {
+        // close modal
+        Modal.destroyAll();
+      });
+      it("should display an error message if fetch fails", async () => {
+        setup("id");
+
+        await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1), {
+          timeout: 2000,
+        });
+        await waitFor(() =>
+          expect(screen.getByText(/error/i)).toBeInTheDocument()
+        );
+      });
+
+      it("should go to Home Page when clicking on Go Back", async () => {
+        const { history } = setup("id");
+
+        await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1), {
+          timeout: 2000,
+        });
+        await waitFor(() =>
+          expect(screen.getByText(/error/i)).toBeInTheDocument()
+        );
+
+        const goBackButton = screen.getByText(/go back/i);
+        userEvent.click(goBackButton);
+        expect(history.location.pathname).toEqual("/");
+      });
+    });
   });
 });

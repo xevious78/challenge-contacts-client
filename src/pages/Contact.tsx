@@ -71,16 +71,28 @@ const Contact = () => {
       const { contact } = response.data;
       setContact(contact);
       resetForm(contact);
+      setIsFetching(false);
     } catch (e) {
       if (e?.response?.status === 404) {
         Modal.error({
           title: "This contact does not exist",
           okText: "Go back",
-          onOk: () => history.push("/"),
+          onOk: () => {
+            setIsFetching(false);
+            history.push("/");
+          },
+        });
+      } else {
+        Modal.error({
+          title: "An error occured while fetching the contact",
+
+          okText: "Go back",
+          onOk: () => {
+            setIsFetching(false);
+            history.push("/");
+          },
         });
       }
-    } finally {
-      setIsFetching(false);
     }
   };
 
