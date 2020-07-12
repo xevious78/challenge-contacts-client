@@ -1,4 +1,3 @@
-// app.test.js
 import React from "react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
@@ -20,10 +19,10 @@ describe("Routes", () => {
     });
   });
 
-  describe("Route: /contact", () => {
+  describe("Route: /contact/new", () => {
     it("should render the contact page", () => {
       const history = createMemoryHistory();
-      history.push("/contact");
+      history.push("/contact/new");
       render(
         <Router history={history}>
           <AppRoutes />
