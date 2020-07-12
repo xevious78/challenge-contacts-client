@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
+import { ContactStoreFetchError } from "../stores/contacts";
 
 const Home = observer(() => {
   const history = useHistory();
@@ -48,6 +49,18 @@ const Home = observer(() => {
   useEffect(() => {
     ContactStore.fetch();
   }, [ContactStore]);
+
+  useEffect(() => {
+    if (ContactStore.fetchError === ContactStoreFetchError.OTHER_ERROR) {
+      Modal.error({
+        title: "An error occured while fetching the contacts",
+        okText: "Retry",
+        onOk: () => {
+          ContactStore.fetch();
+        },
+      });
+    }
+  }, [ContactStore, ContactStore.fetchError]);
 
   ///////////////////////////////////////////
   // Toolbar Cb
