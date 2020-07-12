@@ -46,6 +46,10 @@ export const ContactStore = types
     ///////////////////////////////////////////
     /* Insert contact*/
     addContact: (contact: Contact) => {
+      if (self.contactsMap.get(contact.id)) {
+        return;
+      }
+
       self.contactsMap.set(contact.id, contact);
     },
 
@@ -55,6 +59,10 @@ export const ContactStore = types
     },
 
     updateContact: (contact: Contact) => {
+      if (!self.contactsMap.get(contact.id)) {
+        return;
+      }
+      
       self.contactsMap.set(contact.id, contact);
     },
   }));
