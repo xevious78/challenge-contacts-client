@@ -1,18 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import API from "../../service/api";
 import delay from "../../utils/delay";
 import { Button } from "antd";
 
+type PictureFieldProps = {
+  onUploadPictureChange?: (isUploading: boolean) => void;
+};
+
 const NAME = "pictureId";
 
-const PictureField = React.memo(() => {
+const PictureField = React.memo<PictureFieldProps>((props) => {
+  const { onUploadPictureChange } = props;
+
   ///////////////////////////////////////////
   // Form
   ///////////////////////////////////////////
-  const { register, unregister, watch, setValue } = useFormContext();
-  const pictureId = watch(NAME);
+  const { register, unregister, setValue } = useFormContext();
+  const pictureId = useWatch({ name: NAME });
 
   ///////////////////////////////////////////
   // DropZone
@@ -67,6 +73,10 @@ const PictureField = React.memo(() => {
 
     return () => unregister(NAME);
   }, [register, unregister]);
+
+  useEffect(() => {
+    onUploadPictureChange?.(isUploading);
+  }, [onUploadPictureChange, isUploading]);
 
   ///////////////////////////////////////////
   // Button Cb

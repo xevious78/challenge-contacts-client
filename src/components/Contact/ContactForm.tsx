@@ -9,15 +9,18 @@ import PhoneNumbersField from "./PhoneNumbersField";
 type Props = {
   loading?: boolean;
   disabled?: boolean;
+  onUploadPictureChange?: (isUploading: boolean) => void;
 };
 
 const ContactForm = React.memo<Props>((props) => {
+  const { onUploadPictureChange } = props;
+  
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
   return (
     <div>
-      <PictureField />
+      <PictureField onUploadPictureChange={onUploadPictureChange} />
       <NameField />
       <JobTitleField />
       <EmailField />
