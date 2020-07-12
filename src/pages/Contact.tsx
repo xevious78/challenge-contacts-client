@@ -5,6 +5,7 @@ import { Modal, Button } from "antd";
 import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { useStores } from "../stores";
 
 type FormValues = {
   name: string;
@@ -15,6 +16,7 @@ type FormValues = {
 };
 
 const Contact = () => {
+  const { ContactStore } = useStores();
   const { contactId } = useParams();
   const history = useHistory();
 
@@ -105,6 +107,8 @@ const Contact = () => {
       const { contact } = response.data;
       setContact(contact);
       resetForm(contact);
+      ContactStore.updateContact(contact);
+      history.push(`/`);
     } catch (e) {
       //TODO: Error
     } finally {
@@ -131,8 +135,9 @@ const Contact = () => {
       const { contact } = response.data;
       setContact(contact);
       resetForm(contact);
+      ContactStore.addContact(contact);
 
-      history.replace(`/contact/${contact.id}`);
+      history.push(`/`);
     } catch (e) {
       //TODO: Error
     } finally {
@@ -150,6 +155,8 @@ const Contact = () => {
     await delay(2000);
     try {
       await API.contact.deleteContact(contactId);
+      ContactStore.removeContact(contactId);
+
       history.replace(`/`);
     } catch (e) {
       //TODO: Error

@@ -3,10 +3,15 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Routes from "./Routes";
+import { rootStore } from "./stores";
+import { Provider as MobxProvider } from "mobx-react";
+import "mobx-react-lite/batchingForReactDom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Routes />
+    <MobxProvider {...rootStore.ContactStore}>
+      <Routes />
+    </MobxProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
