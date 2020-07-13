@@ -1,6 +1,6 @@
 import Request, { URLJoin } from "./request";
 import { Contact, ContactInfos } from "../types";
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 
 interface GetContactsData {
   contacts: Array<Contact>;
