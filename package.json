@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
+    "@rehooks/component-size": "^1.0.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^10.4.5",
     "@testing-library/user-event": "^12.0.11",
@@ -13,6 +14,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-phone-number-input": "^3.0.4",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-window": "^1.8.2",
     "@types/url-join": "^4.0.0",
     "add": "^2.0.6",
     "antd": "^4.4.1",
@@ -29,6 +31,7 @@
     "react-phone-number-input": "^3.0.24",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-window": "^1.8.5",
     "typescript": "~3.7.2",
     "url-join": "^4.0.1",
     "yarn": "^1.22.4"

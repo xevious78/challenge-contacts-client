@@ -2,9 +2,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  height: 60px;
+  box-sizing: border-box;
 
   background: white;
-  padding: 8px 12px;
+  padding: 0px 12px;
 
   &:hover {
     background: rgb(250, 250, 250);

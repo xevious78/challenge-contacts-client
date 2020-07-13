@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useStores } from "../stores";
-import ContactCell from "../components/Contact/ContactCell";
 import { Contact } from "../types";
 import { useHistory } from "react-router-dom";
 import { Button, Modal } from "antd";
@@ -11,6 +10,7 @@ import { ContactStoreFetchError } from "../stores/contacts";
 import styles from "./Home.module.scss";
 import ClassName from "../utils/classname";
 import { LoadingOutlined } from "@ant-design/icons";
+import ContactList from "../components/Contact/ContactList";
 
 const Home = observer(() => {
   const history = useHistory();
@@ -129,16 +129,11 @@ const Home = observer(() => {
           </div>
         ) : (
           <div className={cn("contacts")}>
-            {ContactStore.sortedContacts.map((contact: Contact) => (
-              <ContactCell
-                key={contact.id}
-                isDeleting={contact.id === isDeletingContactId}
-                deleteDisabled={!!isDeletingContactId}
-                contact={contact}
-                onClick={handleContactCellClick}
-                onDeleteClick={handleContactCellDeleteClick}
-              />
-            ))}
+            <ContactList
+              isDeletingContactId={isDeletingContactId}
+              onContactCellClick={handleContactCellClick}
+              onContactCellDeleteClick={handleContactCellDeleteClick}
+            />
           </div>
         )}
       </div>
