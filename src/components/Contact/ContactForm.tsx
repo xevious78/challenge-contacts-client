@@ -8,6 +8,7 @@ import PhoneNumbersField from "./PhoneNumbersField";
 import styles from "./ContactForm.module.scss";
 import ClassName from "../../utils/classname";
 import { ContactFormContext } from "../../contexts/ContactFormContext";
+import LoadingOverlay from "../common/LoadingOverlay";
 
 type Props = {
   isLoading?: boolean;
@@ -30,12 +31,15 @@ const ContactForm = React.memo<Props>((props) => {
         <div className={cn("picture-container")}>
           <PictureField onUploadPictureChange={onUploadPictureChange} />
         </div>
-        <div className={cn("form-rows")}>
-          <NameField />
-          <JobTitleField />
-          <EmailField />
-          <AddressField />
-          <PhoneNumbersField />
+        <div className={cn("form-rows-container")}>
+          <div className={cn("form-rows")}>
+            <NameField />
+            <JobTitleField />
+            <EmailField />
+            <AddressField />
+            <PhoneNumbersField />
+          </div>
+          <LoadingOverlay isLoading={isLoading} />
         </div>
       </div>
     </ContactFormContext.Provider>

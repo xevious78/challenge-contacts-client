@@ -6,7 +6,7 @@ import delay from "../../utils/delay";
 import { Button } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
-import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 type PictureFieldProps = {
@@ -17,7 +17,7 @@ const NAME = "pictureId";
 
 const PictureField = React.memo<PictureFieldProps>((props) => {
   const { onUploadPictureChange } = props;
-  const { disabled } = useContactFormContext();
+  const { isLoading, disabled } = useContactFormContext();
 
   ///////////////////////////////////////////
   // Form
@@ -96,7 +96,11 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   const cn = ClassName(styles, "picture-field");
 
   let content: JSX.Element | null = null;
-  if (isUploading) {
+  if (isLoading) {
+    content = <div className={cn("fetching")}>
+      <LoadingOutlined spin />
+    </div>;
+  } else if (isUploading) {
     if (picturePreviewURL) {
       content = (
         <img
