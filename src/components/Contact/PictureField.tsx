@@ -7,6 +7,7 @@ import { Button } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 type PictureFieldProps = {
   onUploadPictureChange?: (isUploading: boolean) => void;
@@ -16,6 +17,7 @@ const NAME = "pictureId";
 
 const PictureField = React.memo<PictureFieldProps>((props) => {
   const { onUploadPictureChange } = props;
+  const { disabled } = useContactFormContext();
 
   ///////////////////////////////////////////
   // Form
@@ -65,7 +67,7 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*",
     onDrop,
-    disabled: isUploading,
+    disabled: isUploading || disabled,
   });
 
   ///////////////////////////////////////////

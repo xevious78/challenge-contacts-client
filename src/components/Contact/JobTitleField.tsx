@@ -2,6 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import FormRow from "../common/FormRow";
 import { FormInput } from "../common/FormComponents";
+import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 const MAX_LENGTH = 100;
 const ERRORS: { [id: string]: string } = {
@@ -11,6 +12,7 @@ const ERRORS: { [id: string]: string } = {
 
 const JobTitleField = React.memo(() => {
   const { errors } = useFormContext();
+  const { disabled } = useContactFormContext();
 
   ///////////////////////////////////////////
   // Render
@@ -32,6 +34,7 @@ const JobTitleField = React.memo(() => {
         name="jobTitle"
         data-testid="jobTitle-input"
         rules={{ required: false, maxLength: MAX_LENGTH }}
+        disabled={disabled}
       />
     </FormRow>
   );

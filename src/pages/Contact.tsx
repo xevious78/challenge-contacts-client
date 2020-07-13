@@ -361,6 +361,9 @@ const ContactPage = () => {
               </div>
               <div>
                 <ContactForm
+                  disabled={
+                    isUpdating || isDeleting || isCreating || isFetching
+                  }
                   onUploadPictureChange={handleUploadPictureChange}
                 />
               </div>

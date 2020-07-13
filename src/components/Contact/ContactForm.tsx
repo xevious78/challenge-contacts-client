@@ -7,14 +7,16 @@ import AddressField from "./AddressField";
 import PhoneNumbersField from "./PhoneNumbersField";
 import styles from "./ContactForm.module.scss";
 import ClassName from "../../utils/classname";
+import { ContactFormContext } from "../../contexts/ContactFormContext";
 
 type Props = {
-  loading?: boolean;
+  isLoading?: boolean;
   disabled?: boolean;
   onUploadPictureChange?: (isUploading: boolean) => void;
 };
 
 const ContactForm = React.memo<Props>((props) => {
+  const { isLoading = false, disabled = false } = props;
   const { onUploadPictureChange } = props;
 
   ///////////////////////////////////////////
@@ -23,18 +25,20 @@ const ContactForm = React.memo<Props>((props) => {
   const cn = ClassName(styles, "contact-form");
 
   return (
-    <div className={cn()}>
-      <div className={cn("picture-container")}>
-        <PictureField onUploadPictureChange={onUploadPictureChange} />
+    <ContactFormContext.Provider value={{ isLoading, disabled }}>
+      <div className={cn()}>
+        <div className={cn("picture-container")}>
+          <PictureField onUploadPictureChange={onUploadPictureChange} />
+        </div>
+        <div className={cn("form-rows")}>
+          <NameField />
+          <JobTitleField />
+          <EmailField />
+          <AddressField />
+          <PhoneNumbersField />
+        </div>
       </div>
-      <div className={cn("form-rows")}>
-        <NameField />
-        <JobTitleField />
-        <EmailField />
-        <AddressField />
-        <PhoneNumbersField />
-      </div>
-    </div>
+    </ContactFormContext.Provider>
   );
 });
 

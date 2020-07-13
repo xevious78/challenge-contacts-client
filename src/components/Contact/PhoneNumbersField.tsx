@@ -5,6 +5,7 @@ import ClassName from "../../utils/classname";
 import styles from "./PhoneNumbersField.module.scss";
 import { Button } from "antd";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
+import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 const MAX_PHONES = 10;
 const MAX_LENGTH = 20;
@@ -18,6 +19,7 @@ const PhoneNumbersField = React.memo(() => {
   const { fields, append, remove } = useFieldArray({
     name: "phoneNumbers",
   });
+  const { disabled } = useContactFormContext();
 
   ///////////////////////////////////////////
   // Render
@@ -48,7 +50,7 @@ const PhoneNumbersField = React.memo(() => {
           <Button
             size={"small"}
             icon={<PlusOutlined />}
-            disabled={fields.length > MAX_PHONES}
+            disabled={fields.length > MAX_PHONES || disabled}
             onClick={() => append({ text: "" }, true)}
           />
         </div>
@@ -67,12 +69,14 @@ const PhoneNumbersField = React.memo(() => {
                   name={`phoneNumbers[${index}].text`}
                   data-testid="phone-input"
                   rules={{ required: true, maxLength: MAX_LENGTH }}
+                  disabled={disabled}
                 />
               </div>
               <Button
                 icon={<MinusOutlined />}
                 size="small"
                 className={fieldCn("button")}
+                disabled={disabled}
                 onClick={() => remove(index)}
               />
             </div>

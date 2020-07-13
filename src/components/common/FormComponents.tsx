@@ -33,6 +33,7 @@ type FormPhoneInputProps = {
   "data-testid"?: string;
   name: string;
   rules?: ValidationRules;
+  disabled?: boolean;
 };
 
 export const FormPhoneInput: React.FC<FormPhoneInputProps> = ({
