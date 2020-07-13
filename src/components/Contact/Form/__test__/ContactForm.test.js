@@ -58,10 +58,7 @@ describe("ContactForm", () => {
       "value",
       "email@test.fr"
     );
-    expect(screen.getByTestId("address-input")).toHaveAttribute(
-      "value",
-      "address"
-    );
+    expect(screen.getByTestId("address-input").textContent).toEqual("address");
 
     const phoneInputs = screen.getAllByTestId("phone-input");
     expect(phoneInputs.length).toBe(2);
@@ -124,4 +121,5 @@ describe("ContactForm", () => {
       expect(onSubmit).not.toBeCalled();
     });
   });
+
 });

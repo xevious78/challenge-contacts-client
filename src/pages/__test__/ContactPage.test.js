@@ -5,7 +5,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider as MobxProvider } from "mobx-react";
 import { rootStore } from "../../stores";
-import API from "../../service/api";
+import API, { CancelToken } from "../../service/api";
 import { AppRoutes } from "../../Routes";
 import userEvent from "@testing-library/user-event";
 import Modal from "antd/lib/modal/Modal";
@@ -34,12 +34,12 @@ describe("ContactPage", () => {
 
   describe("fetch", () => {
     it("should call the getContact API upon loading", async () => {
-      API.contact.getContact = jest.fn(() => Promise.resolve({ id: "id" }));
-      setup("id");
+      API.contact.getContact = jest.fn(() =>
+        Promise.resolve({ data: { id: "123" } })
+      );
+      setup("123");
 
-      await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1), {
-        timeout: 2000,
-      });
+      await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1));
     });
 
     describe("404 message", () => {
@@ -50,15 +50,12 @@ describe("ContactPage", () => {
       });
 
       afterEach(() => {
-        // close modal
         Modal.destroyAll();
       });
       it("should display a 404 error message if the contact does not exist", async () => {
         setup("id");
 
-        await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1), {
-          timeout: 2000,
-        });
+        await waitFor(() => expect(API.contact.getContact).toBeCalledTimes(1));
         await waitFor(() =>
           expect(screen.getByText(/does not exist/i)).toBeInTheDocument()
         );

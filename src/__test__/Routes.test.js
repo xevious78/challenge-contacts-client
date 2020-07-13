@@ -20,7 +20,7 @@ describe("Routes", () => {
   });
 
   describe("Route: /contact/new", () => {
-    it("should render the contact page", () => {
+    it("should render the create contact page", () => {
       const history = createMemoryHistory();
       history.push("/contact/new");
       render(
@@ -29,7 +29,7 @@ describe("Routes", () => {
         </Router>
       );
 
-      expect(screen.getByTestId("contact-page")).toBeInTheDocument();
+      expect(screen.getByTestId("create-contact-page")).toBeInTheDocument();
     });
   });
 
