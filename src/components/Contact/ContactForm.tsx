@@ -24,7 +24,9 @@ const ContactForm = React.memo<Props>((props) => {
 
   return (
     <div className={cn()}>
-      <PictureField onUploadPictureChange={onUploadPictureChange} />
+      <div className={cn("picture-container")}>
+        <PictureField onUploadPictureChange={onUploadPictureChange} />
+      </div>
       <div className={cn("form-rows")}>
         <NameField />
         <JobTitleField />

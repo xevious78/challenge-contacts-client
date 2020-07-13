@@ -4,6 +4,8 @@ import { useDropzone } from "react-dropzone";
 import API from "../../service/api";
 import delay from "../../utils/delay";
 import { Button } from "antd";
+import styles from "./PictureField.module.scss";
+import ClassName from "../../utils/classname";
 
 type PictureFieldProps = {
   onUploadPictureChange?: (isUploading: boolean) => void;
@@ -18,7 +20,7 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   // Form
   ///////////////////////////////////////////
   const { register, unregister, setValue } = useFormContext();
-  const pictureId = useWatch({ name: NAME });
+  const pictureId = useWatch<string>({ name: NAME });
 
   ///////////////////////////////////////////
   // DropZone
@@ -88,22 +90,48 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "picture-field");
+
+  let content: JSX.Element | null = null;
+  if (isUploading) {
+    if (picturePreviewURL) {
+      content = (
+        <img
+          className={cn("loading-picture")}
+          src={picturePreviewURL}
+          alt="loading contact"
+        />
+      );
+    }
+  } else {
+    if (pictureId) {
+      content = (
+        <img
+          className={cn("picture")}
+          src={API.image.getImageURL(pictureId)}
+          alt="contact"
+        />
+      );
+    } else {
+      content = <div className={cn("placeholder")} />;
+    }
+  }
+
   return (
-    <>
-      <div {...getRootProps()}>
-        <input {...getInputProps()} name="image" />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
-        )}
-        {pictureId && <div>{pictureId}</div>}
-        {isUploading && "Uploading"}
-        {picturePreviewURL && <img src={picturePreviewURL} />}
-        {pictureId && <img src={API.image.getImageURL(pictureId)} />}
+    <div className={cn()}>
+      <div {...getRootProps()} className={cn("dropzone-root")}>
+        {content}
+        <input
+          {...getInputProps()}
+          name="image"
+          className={cn("dropzone-input")}
+        />
+        <div
+          className={cn("dropzone-overlay", { "drag-active": isDragActive })}
+        />
       </div>
-      {pictureId && <Button onClick={handleDeleteClick}>Delete</Button>}
-    </>
+      {/* {pictureId && <Button onClick={handleDeleteClick}>Delete</Button>} */}
+    </div>
   );
 });
 
