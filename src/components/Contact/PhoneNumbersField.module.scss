@@ -1,0 +1,51 @@
+.phone-numbers-form-row {
+  padding: 0px 16px;
+
+  &__title-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    flex: 1;
+    font-weight: 600;
+  }
+
+  &__button {
+    margin-left: 4px;
+  }
+
+  &__fields {
+    overflow-y: scroll;
+    max-height: 160px;
+    padding: 16px;
+    border-radius: 4px;
+    background: rgb(245, 245, 245);
+    border: 1px solid rgb(230, 230, 230);
+
+    & > *:not(:last-of-type) {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.phone-numbers-field {
+  &__top-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    flex: 1;
+  }
+
+  &__button {
+    margin-left: 8px;
+  }
+
+  &__error {
+    margin-top: 4px;
+    color: indianred;
+  }
+}

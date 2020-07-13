@@ -5,6 +5,8 @@ import JobTitleField from "./JobTitleField";
 import EmailField from "./EmailField";
 import AddressField from "./AddressField";
 import PhoneNumbersField from "./PhoneNumbersField";
+import styles from "./ContactForm.module.scss";
+import ClassName from "../../utils/classname";
 
 type Props = {
   loading?: boolean;
@@ -14,18 +16,22 @@ type Props = {
 
 const ContactForm = React.memo<Props>((props) => {
   const { onUploadPictureChange } = props;
-  
+
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "contact-form");
+
   return (
-    <div>
+    <div className={cn()}>
       <PictureField onUploadPictureChange={onUploadPictureChange} />
-      <NameField />
-      <JobTitleField />
-      <EmailField />
-      <AddressField />
-      <PhoneNumbersField />
+      <div className={cn("form-rows")}>
+        <NameField />
+        <JobTitleField />
+        <EmailField />
+        <AddressField />
+        <PhoneNumbersField />
+      </div>
     </div>
   );
 });

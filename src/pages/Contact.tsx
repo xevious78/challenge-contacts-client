@@ -290,7 +290,6 @@ const ContactPage = () => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
-  const cn = ClassName(styles, "contact-page");
   const toolbarCn = ClassName(styles, "contact-page-toolbar");
 
   const renderToolbarTitle = () => {
@@ -354,7 +353,7 @@ const ContactPage = () => {
     <FormProvider {...methods}>
       <div data-testid="contact-page">
         <div className="container">
-          <div className={cn("form")}>
+          <div>
             <form ref={formRef} onSubmit={methods.handleSubmit(handleSubmit)}>
               <div className="toolbar">
                 <div className={toolbarCn()}>
