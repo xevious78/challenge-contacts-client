@@ -9,6 +9,7 @@ import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
 import ClassName from "../utils/classname";
 import styles from "./Contact.module.scss";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 type FormValues = {
   pictureId: string;
@@ -267,6 +268,10 @@ const ContactPage = () => {
   // Toolbar Cb
   ///////////////////////////////////////////
 
+  const handleBackClick = () => {
+    history.push("/");
+  };
+
   const handleSubmitClick = () => {
     formRef.current?.dispatchEvent(new Event("submit"));
   };
@@ -352,6 +357,12 @@ const ContactPage = () => {
             <form ref={formRef} onSubmit={methods.handleSubmit(handleSubmit)}>
               <div className="toolbar">
                 <div className={toolbarCn()}>
+                  <Button
+                    icon={<ArrowLeftOutlined />}
+                    size="small"
+                    className={toolbarCn("back-button")}
+                    onClick={handleBackClick}
+                  />
                   <h3 className={toolbarCn("title")}>{renderToolbarTitle()}</h3>
 
                   <div className={toolbarCn("buttons")}>
