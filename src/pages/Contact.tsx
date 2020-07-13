@@ -364,6 +364,7 @@ const ContactPage = () => {
                   disabled={
                     isUpdating || isDeleting || isCreating || isFetching
                   }
+                  isLoading={isFetching}
                   onUploadPictureChange={handleUploadPictureChange}
                 />
               </div>

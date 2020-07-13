@@ -1,0 +1,28 @@
+.loading-overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 500;
+
+  background: white;
+  opacity: 0;
+
+  transition: opacity 300ms linear; 
+  pointer-events: none;
+  &--active {
+    pointer-events: all;
+    opacity: 0.5;
+  }
+
+  & > * {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: rgb(200, 200, 200);
+    font-size: 32px;
+  }
+}
