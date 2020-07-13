@@ -37,6 +37,7 @@ const ContactPage = () => {
   const [contact, setContact] = useState<Contact | null>(null);
 
   const fetchCancelToken = useRef<CancelTokenSource | null>(null);
+  const updateCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -144,9 +145,13 @@ const ContactPage = () => {
 
     setIsUpdating(true);
 
-    await delay(2000);
     try {
-      const response = await API.contact.updateContact(contactId, contactInfos);
+      updateCancelToken.current = CancelToken.source();
+      const response = await API.contact.updateContact(
+        contactId,
+        contactInfos,
+        { cancelToken: updateCancelToken.current.token }
+      );
       const { contact } = response.data;
 
       setContact(contact);
@@ -156,27 +161,31 @@ const ContactPage = () => {
       history.push(`/`);
       setIsUpdating(false);
     } catch (e) {
-      // 404 Error
-      if (e?.response?.status === 404) {
-        Modal.error({
-          title: "This contact does not exist",
-          okText: "Go back",
-          onOk: () => {
-            setIsUpdating(false);
-            history.push("/");
-          },
-        });
-      } else {
-        // Generic Error
-        Modal.error({
-          title: "An error occured while updating the contact",
-          okText: "Go back",
-          onOk: () => {
-            setIsUpdating(false);
-            history.push("/");
-          },
-        });
+      if (!Axios.isCancel(e)) {
+        // 404 Error
+        if (e?.response?.status === 404) {
+          Modal.error({
+            title: "This contact does not exist",
+            okText: "Go back",
+            onOk: () => {
+              setIsUpdating(false);
+              history.push("/");
+            },
+          });
+        } else {
+          // Generic Error
+          Modal.error({
+            title: "An error occured while updating the contact",
+            okText: "Go back",
+            onOk: () => {
+              setIsUpdating(false);
+              history.push("/");
+            },
+          });
+        }
       }
+    } finally {
+      updateCancelToken.current = null;
     }
   };
 
@@ -268,6 +277,7 @@ const ContactPage = () => {
   useEffect(() => {
     return () => {
       fetchCancelToken.current?.cancel();
+      updateCancelToken.current?.cancel();
     };
   }, []);
 
