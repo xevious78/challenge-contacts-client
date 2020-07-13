@@ -3,7 +3,9 @@ import { observer } from "mobx-react";
 import { useStores } from "../../stores";
 import useComponentSize from "@rehooks/component-size";
 import { FixedSizeList as List } from "react-window";
-import ContactCell from "./ContactCell";
+import ContactCell, { CONTACT_CELL_SIZE } from "./ContactCell";
+import styles from "./ContactList.module.scss";
+import ClassName from "../../utils/classname";
 
 type Props = {
   isDeletingContactId: string | null | undefined;
@@ -25,11 +27,13 @@ const ContactList = observer((props: Props) => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cellCn = ClassName(styles, "contact-list-cell");
+
   return (
     <div ref={ref} style={{ height: "100%" }}>
       <List
         itemCount={ContactStore.sortedContacts.length}
-        itemSize={60}
+        itemSize={CONTACT_CELL_SIZE + 1}
         width={width}
         height={height}
         overscanCount={10}
@@ -37,7 +41,7 @@ const ContactList = observer((props: Props) => {
         {({ index, style }) => {
           const contact = ContactStore.sortedContacts[index];
           return (
-            <div style={style}>
+            <div className={cellCn()} style={style}>
               <ContactCell
                 key={contact.id}
                 isDeleting={contact.id === isDeletingContactId}
