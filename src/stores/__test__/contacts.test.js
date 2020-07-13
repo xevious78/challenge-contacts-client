@@ -1,4 +1,4 @@
-import { initializeContactStore } from "../contacts";
+import { initializeContactStore } from "../ContactStore";
 import API from "../../service/api";
 
 describe("ContactStore", () => {

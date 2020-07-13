@@ -105,7 +105,7 @@ const ContactPage = () => {
         fetchCancelToken.current = null;
       }
     },
-    [isFetching, isDeleting, isUpdating, history, resetForm]
+    [isFetching, isDeleting, isUpdating, history, resetForm, ContactStore]
   );
 
   const update = async (contactId: string, contactInfos: ContactInfos) => {
