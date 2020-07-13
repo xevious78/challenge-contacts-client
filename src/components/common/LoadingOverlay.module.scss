@@ -1,15 +1,13 @@
+@import "src/styles/common.scss";
+
 .loading-overlay {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
+  @include absolute-full-size;
   z-index: 500;
 
   background: rgba(white, 0.5);
   opacity: 0;
 
-  transition: opacity 300ms linear; 
+  transition: opacity 300ms linear;
   pointer-events: none;
   &--active {
     pointer-events: all;

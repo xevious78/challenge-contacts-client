@@ -1,3 +1,5 @@
+@import "src/styles/common.scss";
+
 .picture-field {
   position: relative;
   width: 100%;
@@ -18,11 +20,7 @@
 
   &__dropzone-root {
     cursor: pointer;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    @include absolute-full-size;
 
     &:focus {
       outline: none;
@@ -30,20 +28,12 @@
   }
 
   &__dropzone-input {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    @include absolute-full-size;
   }
 
   &__dropzone-overlay {
     pointer-events: none;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    @include absolute-full-size;
 
     background: black;
     opacity: 0;
@@ -57,22 +47,14 @@
 
   &__picture {
     pointer-events: none;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
+    @include absolute-full-size;
 
     object-fit: cover;
   }
 
   &__loading-picture {
     pointer-events: none;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
+    @include absolute-full-size;
 
     object-fit: cover;
     opacity: 0.5;
@@ -80,20 +62,12 @@
 
   &__placeholder {
     pointer-events: none;
-
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    @include absolute-full-size;
 
     background: rgb(240, 240, 240);
 
     & > * {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      @include absolute-center;
 
       font-size: 32px;
       color: rgb(200, 200, 200);
@@ -102,20 +76,12 @@
 
   &__fetching {
     pointer-events: none;
-
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    @include absolute-full-size;
 
     background: rgb(240, 240, 240);
 
     & > * {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      @include absolute-center;
 
       font-size: 32px;
       color: rgb(200, 200, 200);
