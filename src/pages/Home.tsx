@@ -50,7 +50,9 @@ const Home = observer(() => {
   // Effects
   ///////////////////////////////////////////
   useEffect(() => {
-    ContactStore.fetch();
+    if (!ContactStore.hasFetched) {
+      ContactStore.fetch();
+    }
   }, [ContactStore]);
 
   useEffect(() => {

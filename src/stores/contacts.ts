@@ -13,6 +13,7 @@ export enum ContactStoreFetchError {
 export const ContactStore = types
   .model({
     isFetching: false,
+    hasFetched: false,
     fetchError: ContactStoreFetchError.NO_ERROR,
 
     //
@@ -34,13 +35,16 @@ export const ContactStore = types
     fetch: flow(function* () {
       self.fetchError = ContactStoreFetchError.NO_ERROR;
       self.isFetching = true;
+      self.hasFetched = false;
       yield delay(2000);
 
       try {
         const response = yield API.contact.getContacts();
+        self.contactsMap.clear();
         response.data.contacts.forEach((contact: Contact) =>
           self.contactsMap.set(contact.id, contact)
         );
+        self.hasFetched = true;
       } catch (e) {
         self.fetchError = ContactStoreFetchError.OTHER_ERROR;
       } finally {
