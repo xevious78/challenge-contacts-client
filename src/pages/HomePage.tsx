@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
-import { ContactStoreFetchError } from "../stores/contacts";
+import { ContactStoreFetchError } from "../stores/ContactStore";
 import styles from "./HomePage.module.scss";
 import ClassName from "../utils/classname";
 import { LoadingOutlined } from "@ant-design/icons";

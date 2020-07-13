@@ -1,5 +1,5 @@
 import React from "react";
-import { initializeContactStore, ContactStore } from "./contacts";
+import { initializeContactStore, ContactStore } from "./ContactStore";
 import { types } from "mobx-state-tree";
 import "mobx-react-lite/batchingForReactDom";
 import { UIStore, initializeUIStore } from "./UIStore";
