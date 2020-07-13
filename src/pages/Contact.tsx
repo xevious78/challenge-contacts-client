@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
-import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
@@ -315,7 +314,6 @@ const ContactPage = () => {
   };
 
   const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
-    console.log(data);
     const contactInfos = formValuesToContactInfos(data);
 
     if (contactId) {
