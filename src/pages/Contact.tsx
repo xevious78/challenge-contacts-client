@@ -9,7 +9,6 @@ import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
 import ClassName from "../utils/classname";
 import styles from "./Contact.module.scss";
-import { LoadingOutlined } from "@ant-design/icons";
 
 type FormValues = {
   pictureId: string;
