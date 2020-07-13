@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
-import API, { CancelToken } from "../../../service/api";
+import API from "../../../service/api";
 import { Button, Modal } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../../utils/classname";
@@ -58,7 +58,7 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
       setPicturePreviewURL(URL.createObjectURL(image));
 
       try {
-        uploadCancelToken.current = CancelToken.source();
+        uploadCancelToken.current = axios.CancelToken.source();
         const response = await API.image.uploadImage(image, {
           cancelToken: uploadCancelToken.current.token,
         });

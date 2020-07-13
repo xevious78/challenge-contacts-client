@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import API, { CancelToken } from "../service/api";
+import API from "../service/api";
 import { Modal, Button } from "antd";
 import ContactForm, {
   FormValues,
@@ -44,7 +44,7 @@ const CreateContactPage = () => {
     setIsCreating(true);
 
     try {
-      createCancelToken.current = CancelToken.source();
+      createCancelToken.current = Axios.CancelToken.source();
       const response = await API.contact.createContact(contactInfos, {
         cancelToken: createCancelToken.current.token,
       });
@@ -131,7 +131,7 @@ const CreateContactPage = () => {
 
   return (
     <FormProvider {...methods}>
-      <div data-testid="contact-page">
+      <div data-testid="create-contact-page">
         <div className="container">
           <div>
             <form ref={formRef} onSubmit={methods.handleSubmit(handleSubmit)}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import API, { CancelToken } from "../service/api";
+import API from "../service/api";
 import { Modal, Button } from "antd";
 import ContactForm, {
   FormValues,
@@ -65,7 +65,7 @@ const ContactPage = () => {
       setIsFetching(true);
 
       try {
-        fetchCancelToken.current = CancelToken.source();
+        fetchCancelToken.current = Axios.CancelToken.source();
         const response = await API.contact.getContact(contactId, {
           cancelToken: fetchCancelToken.current.token,
         });
@@ -122,7 +122,7 @@ const ContactPage = () => {
     setIsUpdating(true);
 
     try {
-      updateCancelToken.current = CancelToken.source();
+      updateCancelToken.current = Axios.CancelToken.source();
       const response = await API.contact.updateContact(
         contactId,
         contactInfos,
@@ -173,7 +173,7 @@ const ContactPage = () => {
     setIsDeleting(true);
 
     try {
-      deleteCancelToken.current = CancelToken.source();
+      deleteCancelToken.current = Axios.CancelToken.source();
       await API.contact.deleteContact(contactId, {
         cancelToken: deleteCancelToken.current.token,
       });

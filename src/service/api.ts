@@ -86,6 +86,4 @@ const API = {
   },
 };
 
-export const CancelToken = axios.CancelToken;
-
 export default API;
