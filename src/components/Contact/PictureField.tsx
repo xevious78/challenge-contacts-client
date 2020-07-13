@@ -6,6 +6,7 @@ import delay from "../../utils/delay";
 import { Button } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
+import { DeleteOutlined } from "@ant-design/icons";
 
 type PictureFieldProps = {
   onUploadPictureChange?: (isUploading: boolean) => void;
@@ -130,7 +131,14 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
           className={cn("dropzone-overlay", { "drag-active": isDragActive })}
         />
       </div>
-      {/* {pictureId && <Button onClick={handleDeleteClick}>Delete</Button>} */}
+      {pictureId && (
+        <Button
+          className={cn("delete-button")}
+          icon={<DeleteOutlined />}
+          shape="circle"
+          onClick={handleDeleteClick}
+        />
+      )}
     </div>
   );
 });
