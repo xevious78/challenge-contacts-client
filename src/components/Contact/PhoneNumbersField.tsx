@@ -12,6 +12,7 @@ const MAX_LENGTH = 20;
 const ERRORS: { [id: string]: string } = {
   maxLength: `A phone number should be smaller than ${MAX_LENGTH} characters`,
   required: `A phone number cannot be empty`,
+  default: `This phone number is invalid`,
 };
 
 const PhoneNumbersField = React.memo(() => {
@@ -20,6 +21,14 @@ const PhoneNumbersField = React.memo(() => {
     name: "phoneNumbers",
   });
   const { disabled } = useContactFormContext();
+
+  ///////////////////////////////////////////
+  // Buttons Cb
+  ///////////////////////////////////////////
+
+  const handleAddClick = () => {
+    append({ text: "" }, true);
+  };
 
   ///////////////////////////////////////////
   // Render
@@ -51,7 +60,7 @@ const PhoneNumbersField = React.memo(() => {
             size={"small"}
             icon={<PlusOutlined />}
             disabled={fields.length > MAX_PHONES || disabled}
-            onClick={() => append({ text: "" }, true)}
+            onClick={handleAddClick}
           />
         </div>
       </div>
