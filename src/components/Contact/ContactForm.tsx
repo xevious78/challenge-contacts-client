@@ -10,6 +10,24 @@ import ClassName from "../../utils/classname";
 import { ContactFormContext } from "../../contexts/ContactFormContext";
 import LoadingOverlay from "../common/LoadingOverlay";
 
+export type FormValues = {
+  pictureId: string;
+  name: string;
+  jobTitle: string;
+  email: string;
+  address: string;
+  phoneNumbers?: Array<{ text: string }>;
+};
+
+export const formValuesToContactInfos = (data: FormValues) => ({
+  pictureId: data.pictureId,
+  name: data.name,
+  jobTitle: data.jobTitle,
+  email: data.email,
+  address: data.address,
+  phoneNumbers: data.phoneNumbers?.map((a) => a.text).filter((a) => !!a) ?? [], // take only non-empty phone numbers
+});
+
 type Props = {
   isLoading?: boolean;
   disabled?: boolean;

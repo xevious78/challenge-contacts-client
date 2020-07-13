@@ -7,7 +7,7 @@ import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
 import { ContactStoreFetchError } from "../stores/contacts";
-import styles from "./Home.module.scss";
+import styles from "./HomePage.module.scss";
 import ClassName from "../utils/classname";
 import { LoadingOutlined } from "@ant-design/icons";
 import ContactList from "../components/Contact/ContactList";
