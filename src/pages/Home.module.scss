@@ -1,10 +1,10 @@
 .home-page {
   &__contacts {
+    overflow: hidden;
+    height: 500px;
+    max-height: 75vh;
+    border-radius: 8px;
     box-shadow: 0px 2px 20px rgba(black, 0.1);
-
-    & > *:not(:last-of-type) {
-      border-bottom: 1px solid rgb(230, 230, 230);
-    }
   }
 
   &__loading-container {

@@ -13,6 +13,8 @@ type Props = {
   onDeleteClick: (contact: Contact) => void;
 };
 
+export const CONTACT_CELL_SIZE = 60;
+
 const ContactCell = React.memo<Props>((props) => {
   const { contact, isDeleting = false, deleteDisabled = false } = props;
   const { onClick, onDeleteClick } = props;
