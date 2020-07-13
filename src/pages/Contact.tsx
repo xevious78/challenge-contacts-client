@@ -217,15 +217,17 @@ const ContactPage = () => {
       setIsCreating(false);
       history.push(`/`);
     } catch (e) {
-      // Generic error
-      Modal.error({
-        title: "An error occured while creating the contact",
-        okText: "Go back",
-        onOk: () => {
-          setIsCreating(false);
-          history.push("/");
-        },
-      });
+      if (!Axios.isCancel(e)) {
+        // Generic error
+        Modal.error({
+          title: "An error occured while creating the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsCreating(false);
+            history.push("/");
+          },
+        });
+      }
     } finally {
       createCancelToken.current = null;
     }
