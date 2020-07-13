@@ -99,4 +99,26 @@
       color: rgb(200, 200, 200);
     }
   }
+
+  &__fetching {
+    pointer-events: none;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+
+    background: rgb(240, 240, 240);
+
+    & > * {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      font-size: 32px;
+      color: rgb(200, 200, 200);
+    }
+  }
 }
