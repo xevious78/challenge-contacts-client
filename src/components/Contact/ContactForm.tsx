@@ -19,6 +19,15 @@ export type FormValues = {
   phoneNumbers?: Array<{ text: string }>;
 };
 
+export const formValuesToContactInfos = (data: FormValues) => ({
+  pictureId: data.pictureId,
+  name: data.name,
+  jobTitle: data.jobTitle,
+  email: data.email,
+  address: data.address,
+  phoneNumbers: data.phoneNumbers?.map((a) => a.text).filter((a) => !!a) ?? [], // take only non-empty phone numbers
+});
+
 type Props = {
   isLoading?: boolean;
   disabled?: boolean;

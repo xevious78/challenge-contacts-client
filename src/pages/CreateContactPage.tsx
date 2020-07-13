@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
-import ContactForm, { FormValues } from "../components/Contact/ContactForm";
+import ContactForm, {
+  FormValues,
+  formValuesToContactInfos,
+} from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { ContactInfos } from "../types";
@@ -10,7 +13,6 @@ import ClassName from "../utils/classname";
 import styles from "./ContactPage.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Axios, { CancelTokenSource } from "axios";
-
 
 const CreateContactPage = () => {
   const { ContactStore } = useStores();
@@ -23,20 +25,6 @@ const CreateContactPage = () => {
   const createCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
-
-  ///////////////////////////////////////////
-  // Form methods
-  ///////////////////////////////////////////
-
-  const formValuesToContactInfos = (data: FormValues) => ({
-    pictureId: data.pictureId,
-    name: data.name,
-    jobTitle: data.jobTitle,
-    email: data.email,
-    address: data.address,
-    phoneNumbers:
-      data.phoneNumbers?.map((a) => a.text).filter((a) => !!a) ?? [], // take only non-empty phone numbers
-  });
 
   ///////////////////////////////////////////
   // Network

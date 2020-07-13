@@ -2,7 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
-import ContactForm, { FormValues } from "../components/Contact/ContactForm";
+import ContactForm, {
+  FormValues,
+  formValuesToContactInfos,
+} from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
@@ -34,7 +37,6 @@ const ContactPage = () => {
   ///////////////////////////////////////////
   // Form methods
   ///////////////////////////////////////////
-
   const resetForm = useCallback(
     (contact: Contact) => {
       methods.reset({
@@ -50,16 +52,6 @@ const ContactPage = () => {
     },
     [methods]
   );
-
-  const formValuesToContactInfos = (data: FormValues) => ({
-    pictureId: data.pictureId,
-    name: data.name,
-    jobTitle: data.jobTitle,
-    email: data.email,
-    address: data.address,
-    phoneNumbers:
-      data.phoneNumbers?.map((a) => a.text).filter((a) => !!a) ?? [], // take only non-empty phone numbers
-  });
 
   ///////////////////////////////////////////
   // Network
