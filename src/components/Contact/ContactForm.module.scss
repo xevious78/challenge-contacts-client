@@ -1,0 +1,22 @@
+$profile-size: 128px;
+
+.contact-form {
+  position: relative;
+
+  &__picture-container {
+    margin: 0 auto;
+    width: $profile-size;
+    height: $profile-size;
+  }
+
+  &__form-rows {
+    margin-top: -16px;
+    padding: 16px 0px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0px 2px 20px rgba(black, 0.1);
+    & > *:not(:last-child) {
+      margin-bottom: 32px;
+    }
+  }
+}

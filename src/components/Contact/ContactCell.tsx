@@ -1,6 +1,9 @@
 import React from "react";
 import { Contact } from "../../types";
 import { Button } from "antd";
+import styles from "./ContactCell.module.scss";
+import ClassName from "../../utils/classname";
+import { DeleteOutlined } from "@ant-design/icons";
 
 type Props = {
   contact: Contact;
@@ -38,17 +41,20 @@ const ContactCell = React.memo<Props>((props) => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "contact-cell");
+
   return (
-    <div data-testid="contact-cell" onClick={handleClick}>
-      {contact.name}
-      <Button
-        data-testid="delete-button"
-        loading={isDeleting}
-        disabled={isDeleting || deleteDisabled}
-        onClick={handleDeleteClick}
-      >
-        Delete
-      </Button>
+    <div className={cn()} data-testid="contact-cell" onClick={handleClick}>
+      <div className={cn("name")}>{contact.name}</div>
+      <div className={cn("buttons")}>
+        <Button
+          data-testid="delete-button"
+          icon={<DeleteOutlined />}
+          loading={isDeleting}
+          disabled={isDeleting || deleteDisabled}
+          onClick={handleDeleteClick}
+        />
+      </div>
     </div>
   );
 });

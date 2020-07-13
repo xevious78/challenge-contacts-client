@@ -8,6 +8,9 @@ import { Button, Modal } from "antd";
 import delay from "../utils/delay";
 import API from "../service/api";
 import { ContactStoreFetchError } from "../stores/contacts";
+import styles from "./Home.module.scss";
+import ClassName from "../utils/classname";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Home = observer(() => {
   const history = useHistory();
@@ -91,23 +94,51 @@ const Home = observer(() => {
   ///////////////////////////////////////////
   // Render
   ///////////////////////////////////////////
+  const cn = ClassName(styles, "home-page");
+  const toolbarCn = ClassName(styles, "home-page-toolbar");
+
+  const renderTitle = () => {
+    if (ContactStore.isFetching) {
+      return <span>Loading contacts...</span>;
+    }
+
+    return `${ContactStore.sortedContacts.length} contact${
+      ContactStore.sortedContacts.length !== 1 ? "s" : ""
+    }`;
+  };
+
   return (
-    <div data-testid="home-page">
-      <Button type="primary" onClick={handleNewContactButtonClick}>
-        New Contact
-      </Button>
-      <div>Number of contacts: {ContactStore.sortedContacts.length}</div>
-      <div>
-        {ContactStore.sortedContacts.map((contact: Contact) => (
-          <ContactCell
-            key={contact.id}
-            isDeleting={contact.id === isDeletingContactId}
-            deleteDisabled={!!isDeletingContactId}
-            contact={contact}
-            onClick={handleContactCellClick}
-            onDeleteClick={handleContactCellDeleteClick}
-          />
-        ))}
+    <div className={cn()} data-testid="home-page">
+      <div className="toolbar">
+        <div className={toolbarCn()}>
+          <h3 className={toolbarCn("title")}>{renderTitle()}</h3>
+
+          <div className={toolbarCn("butons")}>
+            <Button type="primary" onClick={handleNewContactButtonClick}>
+              New Contact
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="container">
+        {ContactStore.isFetching ? (
+          <div className={cn("loading-container")}>
+            <LoadingOutlined spin />
+          </div>
+        ) : (
+          <div className={cn("contacts")}>
+            {ContactStore.sortedContacts.map((contact: Contact) => (
+              <ContactCell
+                key={contact.id}
+                isDeleting={contact.id === isDeletingContactId}
+                deleteDisabled={!!isDeletingContactId}
+                contact={contact}
+                onClick={handleContactCellClick}
+                onDeleteClick={handleContactCellDeleteClick}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
