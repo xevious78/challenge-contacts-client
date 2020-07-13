@@ -294,11 +294,7 @@ const ContactPage = () => {
 
   const renderToolbarTitle = () => {
     if (isFetching) {
-      return (
-        <span>
-          <LoadingOutlined spin /> Loading contact...
-        </span>
-      );
+      return <span>Loading contact...</span>;
     }
 
     if (!contactId) {

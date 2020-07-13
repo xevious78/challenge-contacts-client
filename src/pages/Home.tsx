@@ -99,11 +99,7 @@ const Home = observer(() => {
 
   const renderTitle = () => {
     if (ContactStore.isFetching) {
-      return (
-        <span>
-          <LoadingOutlined spin /> Loading contacts...
-        </span>
-      );
+      return <span>Loading contacts...</span>;
     }
 
     return `${ContactStore.sortedContacts.length} contact${
