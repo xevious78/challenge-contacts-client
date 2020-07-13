@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
-import ContactForm from "../components/Contact/ContactForm";
+import ContactForm, { FormValues } from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
@@ -10,15 +10,6 @@ import ClassName from "../utils/classname";
 import styles from "./ContactPage.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Axios, { CancelTokenSource } from "axios";
-
-type FormValues = {
-  pictureId: string;
-  name: string;
-  jobTitle: string;
-  email: string;
-  address: string;
-  phoneNumbers?: Array<{ text: string }>;
-};
 
 const ContactPage = () => {
   const { ContactStore } = useStores();

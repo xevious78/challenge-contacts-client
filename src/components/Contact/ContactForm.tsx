@@ -10,6 +10,15 @@ import ClassName from "../../utils/classname";
 import { ContactFormContext } from "../../contexts/ContactFormContext";
 import LoadingOverlay from "../common/LoadingOverlay";
 
+export type FormValues = {
+  pictureId: string;
+  name: string;
+  jobTitle: string;
+  email: string;
+  address: string;
+  phoneNumbers?: Array<{ text: string }>;
+};
+
 type Props = {
   isLoading?: boolean;
   disabled?: boolean;
