@@ -39,6 +39,7 @@ const ContactPage = () => {
   const fetchCancelToken = useRef<CancelTokenSource | null>(null);
   const updateCancelToken = useRef<CancelTokenSource | null>(null);
   const deleteCancelToken = useRef<CancelTokenSource | null>(null);
+  const createCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -203,9 +204,11 @@ const ContactPage = () => {
 
     setIsCreating(true);
 
-    await delay(2000);
     try {
-      const response = await API.contact.createContact(contactInfos);
+      createCancelToken.current = CancelToken.source();
+      const response = await API.contact.createContact(contactInfos, {
+        cancelToken: createCancelToken.current.token,
+      });
       const { contact } = response.data;
 
       setContact(contact);
@@ -224,6 +227,8 @@ const ContactPage = () => {
           history.push("/");
         },
       });
+    } finally {
+      createCancelToken.current = null;
     }
   };
 
@@ -286,6 +291,7 @@ const ContactPage = () => {
       fetchCancelToken.current?.cancel();
       updateCancelToken.current?.cancel();
       deleteCancelToken.current?.cancel();
+      createCancelToken.current?.cancel();
     };
   }, []);
 
