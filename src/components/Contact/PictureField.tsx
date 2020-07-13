@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
-import API from "../../service/api";
-import delay from "../../utils/delay";
+import API, { CancelToken } from "../../service/api";
 import { Button, Modal } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
@@ -12,6 +11,7 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import { useContactFormContext } from "../../contexts/ContactFormContext";
+import axios, { CancelTokenSource } from "axios";
 
 type PictureFieldProps = {
   onUploadPictureChange?: (isUploading: boolean) => void;
@@ -34,6 +34,7 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   ///////////////////////////////////////////
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [picturePreviewURL, _setPicturePreviewURL] = useState<string | null>();
+  const uploadCancelToken = useRef<CancelTokenSource | null>(null);
 
   const setPicturePreviewURL = useCallback(
     (url: string | null) => {
@@ -55,15 +56,21 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
 
       setIsUploading(true);
       setPicturePreviewURL(URL.createObjectURL(image));
-      await delay(1000);
+
       try {
-        const response = await API.image.uploadImage(image);
+        uploadCancelToken.current = CancelToken.source();
+        const response = await API.image.uploadImage(image, {
+          cancelToken: uploadCancelToken.current.token,
+        });
         setValue(NAME, response.data.imageId);
       } catch (e) {
-        Modal.error({ title: "An error occured while uploading the image" });
+        if (!axios.isCancel(e)) {
+          Modal.error({ title: "An error occured while uploading the image" });
+        }
       } finally {
         setPicturePreviewURL(null);
         setIsUploading(false);
+        uploadCancelToken.current = null;
       }
     },
     [setValue, setPicturePreviewURL]
@@ -86,6 +93,13 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
   useEffect(() => {
     onUploadPictureChange?.(isUploading);
   }, [onUploadPictureChange, isUploading]);
+
+  useEffect(() => {
+    return () => {
+      // Cancel upload
+      uploadCancelToken.current?.cancel();
+    };
+  }, []);
 
   ///////////////////////////////////////////
   // Button Cb
