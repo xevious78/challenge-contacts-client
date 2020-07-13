@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import FormRow from "../common/FormRow";
-import { FormInput } from "../common/FormComponents";
+import { FormInput, FormTextArea } from "../common/FormComponents";
 import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 const MAX_LENGTH = 400;
@@ -29,11 +29,12 @@ const AddressField = React.memo(() => {
 
   return (
     <FormRow title="Address" errorMessage={renderError()}>
-      <FormInput
+      <FormTextArea
         name="address"
         data-testid="address-input"
         rules={{ maxLength: MAX_LENGTH }}
         disabled={disabled}
+        autoSize={{ minRows: 3, maxRows: 5 }}
       />
     </FormRow>
   );
