@@ -208,18 +208,22 @@ The `ContactPage` and `CreateContactPage` are responsible for their API calls ar
 
 ### How to improve it?
 
-**How to prevent the download of the whole list of contacts at the beginning?**
+**Prevent the download of the whole list of contacts at the beginning**
 
 For now, the SPA downloads the whole list of contact when first loading the home page.
 We could separate the contacts in multiple pages or use an infinite lazy loader to only fetch the contacts that are needed.
 
-**How to allow different users to use this app?**
+**Allow different users to use this app**
 
 We could implement an authentication feature and send the user's token (`jwt` for instance) with the API calls.
 
-**How to keep the list of contacts in sync between browsers?**
+**Keep the list of contacts in sync between browsers and users?**
 
 We could implement a real-time sync system using `WebSocket` or `socket.io`.
+
+**Open a contact in a new tab**
+
+We could embed the contact cell in a `Link` or a `a` tag.
 
 ### Files & Directories
 
