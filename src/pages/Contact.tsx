@@ -38,6 +38,7 @@ const ContactPage = () => {
 
   const fetchCancelToken = useRef<CancelTokenSource | null>(null);
   const updateCancelToken = useRef<CancelTokenSource | null>(null);
+  const deleteCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -233,35 +234,41 @@ const ContactPage = () => {
 
     setIsDeleting(true);
 
-    await delay(2000);
     try {
-      await API.contact.deleteContact(contactId);
+      deleteCancelToken.current = CancelToken.source();
+      await API.contact.deleteContact(contactId, {
+        cancelToken: deleteCancelToken.current.token,
+      });
       ContactStore.removeContact(contactId);
 
       setIsDeleting(false);
       history.replace(`/`);
     } catch (e) {
-      // 404 error
-      if (e?.response?.status === 404) {
-        Modal.error({
-          title: "This contact does not exist",
-          okText: "Go back",
-          onOk: () => {
-            setIsDeleting(false);
-            history.push("/");
-          },
-        });
-      } else {
-        // Generic error
-        Modal.error({
-          title: "An error occured while deleting the contact",
-          okText: "Go back",
-          onOk: () => {
-            setIsDeleting(false);
-            history.push("/");
-          },
-        });
+      if (!Axios.isCancel(e)) {
+        // 404 error
+        if (e?.response?.status === 404) {
+          Modal.error({
+            title: "This contact does not exist",
+            okText: "Go back",
+            onOk: () => {
+              setIsDeleting(false);
+              history.push("/");
+            },
+          });
+        } else {
+          // Generic error
+          Modal.error({
+            title: "An error occured while deleting the contact",
+            okText: "Go back",
+            onOk: () => {
+              setIsDeleting(false);
+              history.push("/");
+            },
+          });
+        }
       }
+    } finally {
+      deleteCancelToken.current = null;
     }
   };
 
@@ -278,6 +285,7 @@ const ContactPage = () => {
     return () => {
       fetchCancelToken.current?.cancel();
       updateCancelToken.current?.cancel();
+      deleteCancelToken.current?.cancel();
     };
   }, []);
 
