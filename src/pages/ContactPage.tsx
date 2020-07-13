@@ -64,6 +64,13 @@ const ContactPage = () => {
 
       setIsFetching(true);
 
+      // Display the current version of the contact, if it is available
+      const storeContact = ContactStore.contactsMap.get(contactId);
+      if (storeContact) {
+        setContact(storeContact);
+        resetForm(storeContact);
+      }
+
       try {
         fetchCancelToken.current = Axios.CancelToken.source();
         const response = await API.contact.getContact(contactId, {
@@ -217,7 +224,7 @@ const ContactPage = () => {
     if (contactId && !contact) {
       fetch(contactId);
     }
-  }, [contactId, contact, fetch]);
+  }, [contactId, fetch, contact]);
 
   useEffect(() => {
     return () => {
