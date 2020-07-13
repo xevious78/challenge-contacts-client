@@ -46,20 +46,20 @@ const API = {
   },
   contact: {
     getContacts: async (config?: AxiosRequestConfig) => {
-      return Request.get<GetContactsData>("/contacts", { ...config });
+      return Request.get<GetContactsData>("/contact", { ...config });
     },
 
     createContact: async (
       contactInfos: ContactInfos,
       config?: AxiosRequestConfig
     ) => {
-      return Request.post<CreateContactData>("/contacts", {
+      return Request.post<CreateContactData>("/contact", {
         contactInfos: contactInfos,
       });
     },
 
     getContact: async (contactId: string, config?: AxiosRequestConfig) => {
-      return Request.get<GetContactData>(`/contacts/${contactId}`, {
+      return Request.get<GetContactData>(`/contact/${contactId}`, {
         ...config,
       });
     },
@@ -70,7 +70,7 @@ const API = {
       config?: AxiosRequestConfig
     ) => {
       return Request.put<UpdateContactData>(
-        `/contacts/${contactId}`,
+        `/contact/${contactId}`,
         {
           contactInfos: contactInfos,
         },
@@ -79,7 +79,7 @@ const API = {
     },
 
     deleteContact: async (contactId: string, config?: AxiosRequestConfig) => {
-      return Request.delete<DeleteContactData>(`/contacts/${contactId}`, {
+      return Request.delete<DeleteContactData>(`/contact/${contactId}`, {
         ...config,
       });
     },
