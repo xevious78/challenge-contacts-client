@@ -1,5 +1,6 @@
 import Request, { URLJoin } from "./request";
 import { Contact, ContactInfos } from "../types";
+import axios, { AxiosRequestConfig } from "axios";
 
 interface GetContactsData {
   contacts: Array<Contact>;
@@ -27,13 +28,15 @@ interface UploadImageData {
 
 const API = {
   image: {
-    uploadImage: async (image: File) => {
+    uploadImage: async (image: File, config?: AxiosRequestConfig) => {
       const formData = new FormData();
       formData.append("image", image);
       return Request.post<UploadImageData>("/image", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+
+        ...config,
       });
     },
 
@@ -42,30 +45,47 @@ const API = {
     },
   },
   contact: {
-    getContacts: async () => {
-      return Request.get<GetContactsData>("/contacts");
+    getContacts: async (config?: AxiosRequestConfig) => {
+      return Request.get<GetContactsData>("/contacts", { ...config });
     },
 
-    createContact: async (contactInfos: ContactInfos) => {
+    createContact: async (
+      contactInfos: ContactInfos,
+      config?: AxiosRequestConfig
+    ) => {
       return Request.post<CreateContactData>("/contacts", {
         contactInfos: contactInfos,
       });
     },
 
-    getContact: async (contactId: string) => {
-      return Request.get<GetContactData>(`/contacts/${contactId}`);
-    },
-
-    updateContact: async (contactId: string, contactInfos: ContactInfos) => {
-      return Request.put<UpdateContactData>(`/contacts/${contactId}`, {
-        contactInfos: contactInfos,
+    getContact: async (contactId: string, config?: AxiosRequestConfig) => {
+      return Request.get<GetContactData>(`/contacts/${contactId}`, {
+        ...config,
       });
     },
 
-    deleteContact: async (contactId: string) => {
-      return Request.delete<DeleteContactData>(`/contacts/${contactId}`);
+    updateContact: async (
+      contactId: string,
+      contactInfos: ContactInfos,
+      config?: AxiosRequestConfig
+    ) => {
+      return Request.put<UpdateContactData>(
+        `/contacts/${contactId}`,
+        {
+          contactInfos: contactInfos,
+        },
+        { ...config }
+      );
+    },
+
+    deleteContact: async (contactId: string, config?: AxiosRequestConfig) => {
+      return Request.delete<DeleteContactData>(`/contacts/${contactId}`, {
+        ...config,
+      });
     },
   },
 };
+
+export const CancelToken = axios.CancelToken;
 
 export default API;

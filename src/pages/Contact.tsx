@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import API from "../service/api";
+import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
-import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
@@ -10,6 +9,7 @@ import { Contact, ContactInfos } from "../types";
 import ClassName from "../utils/classname";
 import styles from "./Contact.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import Axios, { CancelTokenSource } from "axios";
 
 type FormValues = {
   pictureId: string;
@@ -31,10 +31,14 @@ const ContactPage = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<Contact | null>(null);
+
+  const fetchCancelToken = useRef<CancelTokenSource | null>(null);
+  const updateCancelToken = useRef<CancelTokenSource | null>(null);
+  const deleteCancelToken = useRef<CancelTokenSource | null>(null);
+  const createCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -78,10 +82,12 @@ const ContactPage = () => {
       }
 
       setIsFetching(true);
-      await delay(2000);
 
       try {
-        const response = await API.contact.getContact(contactId);
+        fetchCancelToken.current = CancelToken.source();
+        const response = await API.contact.getContact(contactId, {
+          cancelToken: fetchCancelToken.current.token,
+        });
         const { contact } = response.data;
 
         setContact(contact);
@@ -89,28 +95,32 @@ const ContactPage = () => {
 
         setIsFetching(false);
       } catch (e) {
-        // 404 error
-        if (e?.response?.status === 404) {
-          Modal.error({
-            title: "This contact does not exist",
-            okText: "Go back",
-            onOk: () => {
-              setIsFetching(false);
-              history.push("/");
-            },
-          });
-        } else {
-          // Generic error
-          Modal.error({
-            title: "An error occured while fetching the contact",
+        if (!Axios.isCancel(e)) {
+          // 404 error
+          if (e?.response?.status === 404) {
+            Modal.error({
+              title: "This contact does not exist",
+              okText: "Go back",
+              onOk: () => {
+                setIsFetching(false);
+                history.push("/");
+              },
+            });
+          } else {
+            // Generic error
+            Modal.error({
+              title: "An error occured while fetching the contact",
 
-            okText: "Go back",
-            onOk: () => {
-              setIsFetching(false);
-              history.push("/");
-            },
-          });
+              okText: "Go back",
+              onOk: () => {
+                setIsFetching(false);
+                history.push("/");
+              },
+            });
+          }
         }
+      } finally {
+        fetchCancelToken.current = null;
       }
     },
     [isFetching, isDeleting, isUpdating, isCreating, history, resetForm]
@@ -136,9 +146,13 @@ const ContactPage = () => {
 
     setIsUpdating(true);
 
-    await delay(2000);
     try {
-      const response = await API.contact.updateContact(contactId, contactInfos);
+      updateCancelToken.current = CancelToken.source();
+      const response = await API.contact.updateContact(
+        contactId,
+        contactInfos,
+        { cancelToken: updateCancelToken.current.token }
+      );
       const { contact } = response.data;
 
       setContact(contact);
@@ -148,27 +162,31 @@ const ContactPage = () => {
       history.push(`/`);
       setIsUpdating(false);
     } catch (e) {
-      // 404 Error
-      if (e?.response?.status === 404) {
-        Modal.error({
-          title: "This contact does not exist",
-          okText: "Go back",
-          onOk: () => {
-            setIsUpdating(false);
-            history.push("/");
-          },
-        });
-      } else {
-        // Generic Error
-        Modal.error({
-          title: "An error occured while updating the contact",
-          okText: "Go back",
-          onOk: () => {
-            setIsUpdating(false);
-            history.push("/");
-          },
-        });
+      if (!Axios.isCancel(e)) {
+        // 404 Error
+        if (e?.response?.status === 404) {
+          Modal.error({
+            title: "This contact does not exist",
+            okText: "Go back",
+            onOk: () => {
+              setIsUpdating(false);
+              history.push("/");
+            },
+          });
+        } else {
+          // Generic Error
+          Modal.error({
+            title: "An error occured while updating the contact",
+            okText: "Go back",
+            onOk: () => {
+              setIsUpdating(false);
+              history.push("/");
+            },
+          });
+        }
       }
+    } finally {
+      updateCancelToken.current = null;
     }
   };
 
@@ -185,9 +203,11 @@ const ContactPage = () => {
 
     setIsCreating(true);
 
-    await delay(2000);
     try {
-      const response = await API.contact.createContact(contactInfos);
+      createCancelToken.current = CancelToken.source();
+      const response = await API.contact.createContact(contactInfos, {
+        cancelToken: createCancelToken.current.token,
+      });
       const { contact } = response.data;
 
       setContact(contact);
@@ -197,15 +217,19 @@ const ContactPage = () => {
       setIsCreating(false);
       history.push(`/`);
     } catch (e) {
-      // Generic error
-      Modal.error({
-        title: "An error occured while creating the contact",
-        okText: "Go back",
-        onOk: () => {
-          setIsCreating(false);
-          history.push("/");
-        },
-      });
+      if (!Axios.isCancel(e)) {
+        // Generic error
+        Modal.error({
+          title: "An error occured while creating the contact",
+          okText: "Go back",
+          onOk: () => {
+            setIsCreating(false);
+            history.push("/");
+          },
+        });
+      }
+    } finally {
+      createCancelToken.current = null;
     }
   };
 
@@ -216,35 +240,41 @@ const ContactPage = () => {
 
     setIsDeleting(true);
 
-    await delay(2000);
     try {
-      await API.contact.deleteContact(contactId);
+      deleteCancelToken.current = CancelToken.source();
+      await API.contact.deleteContact(contactId, {
+        cancelToken: deleteCancelToken.current.token,
+      });
       ContactStore.removeContact(contactId);
 
       setIsDeleting(false);
       history.replace(`/`);
     } catch (e) {
-      // 404 error
-      if (e?.response?.status === 404) {
-        Modal.error({
-          title: "This contact does not exist",
-          okText: "Go back",
-          onOk: () => {
-            setIsDeleting(false);
-            history.push("/");
-          },
-        });
-      } else {
-        // Generic error
-        Modal.error({
-          title: "An error occured while deleting the contact",
-          okText: "Go back",
-          onOk: () => {
-            setIsDeleting(false);
-            history.push("/");
-          },
-        });
+      if (!Axios.isCancel(e)) {
+        // 404 error
+        if (e?.response?.status === 404) {
+          Modal.error({
+            title: "This contact does not exist",
+            okText: "Go back",
+            onOk: () => {
+              setIsDeleting(false);
+              history.push("/");
+            },
+          });
+        } else {
+          // Generic error
+          Modal.error({
+            title: "An error occured while deleting the contact",
+            okText: "Go back",
+            onOk: () => {
+              setIsDeleting(false);
+              history.push("/");
+            },
+          });
+        }
       }
+    } finally {
+      deleteCancelToken.current = null;
     }
   };
 
@@ -256,6 +286,15 @@ const ContactPage = () => {
       fetch(contactId);
     }
   }, [contactId, contact, fetch]);
+
+  useEffect(() => {
+    return () => {
+      fetchCancelToken.current?.cancel();
+      updateCancelToken.current?.cancel();
+      deleteCancelToken.current?.cancel();
+      createCancelToken.current?.cancel();
+    };
+  }, []);
 
   ///////////////////////////////////////////
   // ContactForm Cb
@@ -277,7 +316,6 @@ const ContactPage = () => {
   };
 
   const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
-    console.log(data);
     const contactInfos = formValuesToContactInfos(data);
 
     if (contactId) {
