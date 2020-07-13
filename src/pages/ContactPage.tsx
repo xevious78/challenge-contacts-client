@@ -73,6 +73,7 @@ const ContactPage = () => {
 
         setContact(contact);
         resetForm(contact);
+        ContactStore.updateContact(contact);
 
         setIsFetching(false);
       } catch (e) {
