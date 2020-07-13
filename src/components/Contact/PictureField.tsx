@@ -3,10 +3,14 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import API from "../../service/api";
 import delay from "../../utils/delay";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
-import { DeleteOutlined, UserOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  UserOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 type PictureFieldProps = {
@@ -56,7 +60,7 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
         const response = await API.image.uploadImage(image);
         setValue(NAME, response.data.imageId);
       } catch (e) {
-        console.error(e);
+        Modal.error({ title: "An error occured while uploading the image" });
       } finally {
         setPicturePreviewURL(null);
         setIsUploading(false);
@@ -97,9 +101,11 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
 
   let content: JSX.Element | null = null;
   if (isLoading) {
-    content = <div className={cn("fetching")}>
-      <LoadingOutlined spin />
-    </div>;
+    content = (
+      <div className={cn("fetching")}>
+        <LoadingOutlined spin />
+      </div>
+    );
   } else if (isUploading) {
     if (picturePreviewURL) {
       content = (
