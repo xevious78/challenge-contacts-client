@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import API from "../service/api";
+import API, { CancelToken } from "../service/api";
 import { Modal, Button } from "antd";
 import delay from "../utils/delay";
 import ContactForm from "../components/Contact/ContactForm";
@@ -10,6 +10,7 @@ import { Contact, ContactInfos } from "../types";
 import ClassName from "../utils/classname";
 import styles from "./Contact.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import Axios, { CancelTokenSource } from "axios";
 
 type FormValues = {
   pictureId: string;
@@ -31,10 +32,11 @@ const ContactPage = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<Contact | null>(null);
+
+  const fetchCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -78,10 +80,12 @@ const ContactPage = () => {
       }
 
       setIsFetching(true);
-      await delay(2000);
 
       try {
-        const response = await API.contact.getContact(contactId);
+        fetchCancelToken.current = CancelToken.source();
+        const response = await API.contact.getContact(contactId, {
+          cancelToken: fetchCancelToken.current.token,
+        });
         const { contact } = response.data;
 
         setContact(contact);
@@ -89,28 +93,32 @@ const ContactPage = () => {
 
         setIsFetching(false);
       } catch (e) {
-        // 404 error
-        if (e?.response?.status === 404) {
-          Modal.error({
-            title: "This contact does not exist",
-            okText: "Go back",
-            onOk: () => {
-              setIsFetching(false);
-              history.push("/");
-            },
-          });
-        } else {
-          // Generic error
-          Modal.error({
-            title: "An error occured while fetching the contact",
+        if (!Axios.isCancel(e)) {
+          // 404 error
+          if (e?.response?.status === 404) {
+            Modal.error({
+              title: "This contact does not exist",
+              okText: "Go back",
+              onOk: () => {
+                setIsFetching(false);
+                history.push("/");
+              },
+            });
+          } else {
+            // Generic error
+            Modal.error({
+              title: "An error occured while fetching the contact",
 
-            okText: "Go back",
-            onOk: () => {
-              setIsFetching(false);
-              history.push("/");
-            },
-          });
+              okText: "Go back",
+              onOk: () => {
+                setIsFetching(false);
+                history.push("/");
+              },
+            });
+          }
         }
+      } finally {
+        fetchCancelToken.current = null;
       }
     },
     [isFetching, isDeleting, isUpdating, isCreating, history, resetForm]
@@ -256,6 +264,12 @@ const ContactPage = () => {
       fetch(contactId);
     }
   }, [contactId, contact, fetch]);
+
+  useEffect(() => {
+    return () => {
+      fetchCancelToken.current?.cancel();
+    };
+  }, []);
 
   ///////////////////////////////////////////
   // ContactForm Cb
