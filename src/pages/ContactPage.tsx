@@ -7,7 +7,7 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { Contact, ContactInfos } from "../types";
 import ClassName from "../utils/classname";
-import styles from "./Contact.module.scss";
+import styles from "./ContactPage.module.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Axios, { CancelTokenSource } from "axios";
 
@@ -31,14 +31,12 @@ const ContactPage = () => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const [contact, setContact] = useState<Contact | null>(null);
 
   const fetchCancelToken = useRef<CancelTokenSource | null>(null);
   const updateCancelToken = useRef<CancelTokenSource | null>(null);
   const deleteCancelToken = useRef<CancelTokenSource | null>(null);
-  const createCancelToken = useRef<CancelTokenSource | null>(null);
 
   const formRef = React.createRef<HTMLFormElement>();
 
@@ -77,7 +75,7 @@ const ContactPage = () => {
   ///////////////////////////////////////////
   const fetch = useCallback(
     async (contactId: string) => {
-      if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
+      if (!contactId || isFetching || isDeleting || isUpdating) {
         return;
       }
 
@@ -123,18 +121,11 @@ const ContactPage = () => {
         fetchCancelToken.current = null;
       }
     },
-    [isFetching, isDeleting, isUpdating, isCreating, history, resetForm]
+    [isFetching, isDeleting, isUpdating, history, resetForm]
   );
 
   const update = async (contactId: string, contactInfos: ContactInfos) => {
-    if (
-      !contactId ||
-      !contactInfos ||
-      isFetching ||
-      isDeleting ||
-      isUpdating ||
-      isCreating
-    ) {
+    if (!contactId || !contactInfos || isFetching || isDeleting || isUpdating) {
       return;
     }
 
@@ -190,51 +181,8 @@ const ContactPage = () => {
     }
   };
 
-  const create = async (contactInfos: ContactInfos) => {
-    if (!contactInfos || isFetching || isDeleting || isUpdating || isCreating) {
-      return;
-    }
-
-    methods.clearErrors();
-    const validated = await methods.trigger();
-    if (!validated) {
-      return;
-    }
-
-    setIsCreating(true);
-
-    try {
-      createCancelToken.current = CancelToken.source();
-      const response = await API.contact.createContact(contactInfos, {
-        cancelToken: createCancelToken.current.token,
-      });
-      const { contact } = response.data;
-
-      setContact(contact);
-      resetForm(contact);
-      ContactStore.addContact(contact);
-
-      setIsCreating(false);
-      history.push(`/`);
-    } catch (e) {
-      if (!Axios.isCancel(e)) {
-        // Generic error
-        Modal.error({
-          title: "An error occured while creating the contact",
-          okText: "Go back",
-          onOk: () => {
-            setIsCreating(false);
-            history.push("/");
-          },
-        });
-      }
-    } finally {
-      createCancelToken.current = null;
-    }
-  };
-
   const deleteContact = async (contactId: string) => {
-    if (!contactId || isFetching || isDeleting || isUpdating || isCreating) {
+    if (!contactId || isFetching || isDeleting || isUpdating) {
       return;
     }
 
@@ -292,7 +240,6 @@ const ContactPage = () => {
       fetchCancelToken.current?.cancel();
       updateCancelToken.current?.cancel();
       deleteCancelToken.current?.cancel();
-      createCancelToken.current?.cancel();
     };
   }, []);
 
@@ -317,12 +264,7 @@ const ContactPage = () => {
 
   const handleSubmit: SubmitHandler<FormValues> = (data, e) => {
     const contactInfos = formValuesToContactInfos(data);
-
-    if (contactId) {
-      update(contactId, contactInfos);
-    } else {
-      create(contactInfos);
-    }
+    update(contactId, contactInfos);
   };
 
   const handleDeleteClick = () => {
@@ -347,44 +289,29 @@ const ContactPage = () => {
   };
 
   const renderToolbarButtons = () => {
-    if (contactId) {
-      return (
-        <>
-          <Button
-            type="primary"
-            onClick={handleSubmitClick}
-            disabled={
-              isFetching || isUpdating || isDeleting || isUploadingPicture
-            }
-            loading={isUpdating}
-          >
-            Save
-          </Button>
-          <Button
-            disabled={
-              isFetching || isUpdating || isDeleting || isUploadingPicture
-            }
-            loading={isDeleting}
-            onClick={handleDeleteClick}
-          >
-            Delete
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Button
-            type="primary"
-            onClick={handleSubmitClick}
-            disabled={isUpdating || isUploadingPicture}
-            loading={isCreating}
-          >
-            Create
-          </Button>
-        </>
-      );
-    }
+    return (
+      <>
+        <Button
+          type="primary"
+          onClick={handleSubmitClick}
+          disabled={
+            isFetching || isUpdating || isDeleting || isUploadingPicture
+          }
+          loading={isUpdating}
+        >
+          Save
+        </Button>
+        <Button
+          disabled={
+            isFetching || isUpdating || isDeleting || isUploadingPicture
+          }
+          loading={isDeleting}
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </Button>
+      </>
+    );
   };
 
   return (
@@ -410,9 +337,7 @@ const ContactPage = () => {
               </div>
               <div>
                 <ContactForm
-                  disabled={
-                    isUpdating || isDeleting || isCreating || isFetching
-                  }
+                  disabled={isUpdating || isDeleting || isFetching}
                   isLoading={isFetching}
                   onUploadPictureChange={handleUploadPictureChange}
                 />

@@ -3,20 +3,21 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 
 // Pages
-import Contact from "./pages/Contact";
-import Home from "./pages/Home";
+import ContactPage from "./pages/ContactPage";
+import HomePage from "./pages/HomePage";
+import CreateContactPage from "./pages/CreateContactPage";
 
 export const AppRoutes = () => (
   <App>
     <Switch>
       <Route exact path="/">
-        <Home />
+        <HomePage />
       </Route>
       <Route exact path="/contact/new">
-        <Contact />
+        <CreateContactPage />
       </Route>
       <Route exact path="/contact/:contactId">
-        <Contact />
+        <ContactPage />
       </Route>
     </Switch>
   </App>
