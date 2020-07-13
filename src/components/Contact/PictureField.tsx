@@ -6,7 +6,7 @@ import delay from "../../utils/delay";
 import { Button } from "antd";
 import styles from "./PictureField.module.scss";
 import ClassName from "../../utils/classname";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 
 type PictureFieldProps = {
   onUploadPictureChange?: (isUploading: boolean) => void;
@@ -114,7 +114,11 @@ const PictureField = React.memo<PictureFieldProps>((props) => {
         />
       );
     } else {
-      content = <div className={cn("placeholder")} />;
+      content = (
+        <div className={cn("placeholder")}>
+          <UserOutlined />
+        </div>
+      );
     }
   }
 
