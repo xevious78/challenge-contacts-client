@@ -46,7 +46,11 @@ const ContactCell = React.memo<Props>((props) => {
   const cn = ClassName(styles, "contact-cell");
 
   return (
-    <div className={cn()} data-testid="contact-cell" onClick={handleClick}>
+    <div
+      className={cn({ "is-deleting": isDeleting })}
+      data-testid="contact-cell"
+      onClick={handleClick}
+    >
       <div className={cn("name")}>{contact.name}</div>
       <div className={cn("buttons")}>
         <Button
