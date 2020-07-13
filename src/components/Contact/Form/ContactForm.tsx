@@ -6,9 +6,9 @@ import EmailField from "./EmailField";
 import AddressField from "./AddressField";
 import PhoneNumbersField from "./PhoneNumbersField";
 import styles from "./ContactForm.module.scss";
-import ClassName from "../../utils/classname";
-import { ContactFormContext } from "../../contexts/ContactFormContext";
-import LoadingOverlay from "../common/LoadingOverlay";
+import ClassName from "../../../utils/classname";
+import { ContactFormContext } from "../../../contexts/ContactFormContext";
+import LoadingOverlay from "../../common/LoadingOverlay";
 
 export type FormValues = {
   pictureId: string;

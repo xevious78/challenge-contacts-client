@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
-import API, { CancelToken } from "../../service/api";
+import API, { CancelToken } from "../../../service/api";
 import { Button, Modal } from "antd";
 import styles from "./PictureField.module.scss";
-import ClassName from "../../utils/classname";
+import ClassName from "../../../utils/classname";
 import {
   DeleteOutlined,
   UserOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { useContactFormContext } from "../../contexts/ContactFormContext";
+import { useContactFormContext } from "../../../contexts/ContactFormContext";
 import axios, { CancelTokenSource } from "axios";
 
 type PictureFieldProps = {

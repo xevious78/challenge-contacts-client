@@ -10,7 +10,7 @@ import { ContactStoreFetchError } from "../stores/contacts";
 import styles from "./HomePage.module.scss";
 import ClassName from "../utils/classname";
 import { LoadingOutlined } from "@ant-design/icons";
-import ContactList from "../components/Contact/ContactList";
+import ContactList from "../components/Contact/List/ContactList";
 
 const Home = observer(() => {
   const history = useHistory();

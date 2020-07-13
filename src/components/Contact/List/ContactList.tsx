@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useStores } from "../../stores";
+import { useStores } from "../../../stores";
 import useComponentSize from "@rehooks/component-size";
 import { FixedSizeList as List, ListOnScrollProps } from "react-window";
 import ContactCell, { CONTACT_CELL_SIZE } from "./ContactCell";
 import styles from "./ContactList.module.scss";
-import ClassName from "../../utils/classname";
+import ClassName from "../../../utils/classname";
 
 type Props = {
   isDeletingContactId: string | null | undefined;

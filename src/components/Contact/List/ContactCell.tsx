@@ -1,8 +1,8 @@
 import React from "react";
-import { Contact } from "../../types";
+import { Contact } from "../../../types";
 import { Button } from "antd";
 import styles from "./ContactCell.module.scss";
-import ClassName from "../../utils/classname";
+import ClassName from "../../../utils/classname";
 import { DeleteOutlined } from "@ant-design/icons";
 
 type Props = {

@@ -5,7 +5,7 @@ import { Modal, Button } from "antd";
 import ContactForm, {
   FormValues,
   formValuesToContactInfos,
-} from "../components/Contact/ContactForm";
+} from "../components/Contact/Form/ContactForm";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { useStores } from "../stores";
 import { ContactInfos } from "../types";

@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import FormRow from "../common/FormRow";
-import { FormInput } from "../common/FormComponents";
-import { useContactFormContext } from "../../contexts/ContactFormContext";
+import FormRow from "../../common/FormRow";
+import { FormInput } from "../../common/FormComponents";
+import { useContactFormContext } from "../../../contexts/ContactFormContext";
 
 const MAX_LENGTH = 100;
 const ERRORS: { [id: string]: string } = {
