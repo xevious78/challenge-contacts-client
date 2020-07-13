@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import FormRow from "../common/FormRow";
-import { FormInput, FormTextArea } from "../common/FormComponents";
+import { FormTextArea } from "../common/FormComponents";
 import { useContactFormContext } from "../../contexts/ContactFormContext";
 
 const MAX_LENGTH = 400;
