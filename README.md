@@ -47,18 +47,18 @@ $ PORT=xxxx serve -s build
 
 | Name           | Type            |
 | -------------- | --------------- |
-| `name`         | string          |
-| `jobTitle`     | string          |
-| `address`      | string          |
-| `email`        | string          |
-| `pictureId`    | string          |
-| `phoneNumbers` | Array of string |
+| `name`         | `string`          |
+| `jobTitle`     | `string`          |
+| `address`      | `string`          |
+| `email`        | `string`          |
+| `pictureId`    | `string`          |
+| `phoneNumbers` | Array of `string` |
 
 #### `Contact`
 
 | Name      | Type           |
 | --------- | -------------- |
-| `id`      | string         |
+| `id`      | `string`         |
 | `...rest` | `ContactInfos` |
 
 ### Routes
@@ -93,7 +93,7 @@ An image file
 
 | Name      | Type   |
 | --------- | ------ |
-| `imageId` | string |
+| `imageId` | `string` |
 
 ---
 
