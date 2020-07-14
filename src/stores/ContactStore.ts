@@ -1,6 +1,5 @@
 import { types, flow } from "mobx-state-tree";
 import API from "../service/api";
-import delay from "../utils/delay";
 import { Contact } from "../types";
 
 const ContactModel = types.frozen();
@@ -36,7 +35,6 @@ export const ContactStore = types
       self.fetchError = ContactStoreFetchError.NO_ERROR;
       self.isFetching = true;
       self.hasFetched = false;
-      yield delay(2000);
 
       try {
         const response = yield API.contact.getContacts();
