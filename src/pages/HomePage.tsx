@@ -4,7 +4,6 @@ import { useStores } from "../stores";
 import { Contact } from "../types";
 import { useHistory } from "react-router-dom";
 import { Button, Modal } from "antd";
-import delay from "../utils/delay";
 import API from "../service/api";
 import { ContactStoreFetchError } from "../stores/ContactStore";
 import styles from "./HomePage.module.scss";
@@ -26,8 +25,6 @@ const Home = observer(() => {
 
   const deleteContact = async (contactId: string) => {
     setIsDeletingContactId(contactId);
-
-    await delay(1000);
 
     try {
       await API.contact.deleteContact(contactId);
