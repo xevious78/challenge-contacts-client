@@ -228,7 +228,7 @@ The button of `antd` apparentely uses `findDOMNode`, which is a deprecated React
 **Prevent the download of the whole list of contacts at the beginning**
 
 For now, the SPA downloads the whole list of contact when first loading the home page.
-We could separate the contacts in multiple pages and allow the UI to select the page it needs to show (using a [pagination component](https://ant.design/components/pagination/) or an [infinite scroll loader]()https://github.com/bvaughn/react-window-infinite-loader).
+We could separate the contacts in multiple pages and allow the UI to select the page it needs to show (using a [pagination component](https://ant.design/components/pagination/) or an [infinite scroll loader](https://github.com/bvaughn/react-window-infinite-loader)).
 
 **Open a contact in a new tab**
 
