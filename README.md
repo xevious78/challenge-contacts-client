@@ -26,7 +26,7 @@ Finally, start the server (on port 3000 by default).
 $ yarn start
 ```
 
-To run the app in production, run this command to build the SPA:
+To run the app in production mode, run this command to build the SPA:
 
 ```
 $ yarn build
