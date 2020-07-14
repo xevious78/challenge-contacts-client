@@ -206,12 +206,20 @@ When the home page is loaded for the first time, all the contacts are fetched an
 
 The `ContactPage` and `CreateContactPage` are responsible for their API calls are for updating the `ContactStore` accordingly. The `ContactPage` fetches the contact with the provided `:contactId` in order to verify the contact is still in sync.
 
+### Known issues
+
+The button of `antd` apparentely uses `findDOMNode`, which is a deprecated React API. A warning is raised in development mode - because the SPA runs in React's `StrictMode` - but it does not affect the SPA.
+
 ### How to improve it?
 
 **Prevent the download of the whole list of contacts at the beginning**
 
 For now, the SPA downloads the whole list of contact when first loading the home page.
-We could separate the contacts in multiple pages or use an infinite lazy loader to only fetch the contacts that are needed.
+We could separate the contacts in multiple pages and allow the UI to select the page it needs to show (using a [pagination component](https://ant.design/components/pagination/) or an [infinite scroll loader]()https://github.com/bvaughn/react-window-infinite-loader).
+
+**Open a contact in a new tab**
+
+We could embed the contact cell in a `Link` or a `a` tag.
 
 **Allow different users to use this app**
 
@@ -221,9 +229,9 @@ We could implement an authentication feature and send the user's token (`jwt` fo
 
 We could implement a real-time sync system using `WebSocket` or `socket.io`.
 
-**Open a contact in a new tab**
+**Update the HTML title as we move between pages**
 
-We could embed the contact cell in a `Link` or a `a` tag.
+We could use `react-helmet` in the relevant pages to update the title dynamically.
 
 ### Files & Directories
 
