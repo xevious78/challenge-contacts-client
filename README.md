@@ -26,6 +26,19 @@ Finally, start the server (on port 3000 by default).
 $ yarn start
 ```
 
+To run the app in production, run this command to build the SPA:
+
+```
+$ yarn build
+```
+
+And then run the server using `serve`(or any other utility):
+
+```
+$ yarn global add serve # install serve
+$ PORT=xxxx serve -s build
+```
+
 ## Backend API
 
 ### Types
