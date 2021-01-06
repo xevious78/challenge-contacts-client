@@ -14,7 +14,7 @@
     "@types/react-window": "^1.8.2",
     "@types/url-join": "^4.0.0",
     "antd": "^4.4.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "easy-bem": "^1.0.2",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
